@@ -1,0 +1,84 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Ketringan v2 API Documentation",
+        "description": "API documentation for Ketringan App v2. Usable for PWA and Android Mobile",
+        "contact": {
+            "email": "ilhamfi_2701@yahoo.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "localhost:8000/api/v1",
+            "description": "Main development server"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "API for Login, the login will be generate token that must used by all pages that require authentication",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\UserController::login",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "User's email",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "User's password",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "description": "API for Login, the login will be generate token that must used by all pages that require authentication",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\UserController::register",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "User's Name",
+                        "required": true
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "User's email",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Chosen password from user",
+                        "required": true
+                    },
+                    {
+                        "name": "password_confirm",
+                        "in": "query",
+                        "description": "Password confirmation",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Welcome page"
+                    }
+                }
+            }
+        }
+    }
+}
