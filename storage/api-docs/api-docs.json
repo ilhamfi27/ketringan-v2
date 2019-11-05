@@ -49,15 +49,21 @@
                 "operationId": "App\\Http\\Controllers\\api\\v1\\UserController::register",
                 "parameters": [
                     {
-                        "name": "name",
+                        "name": "nama",
                         "in": "query",
-                        "description": "User's Name",
+                        "description": "User's name",
                         "required": true
                     },
                     {
                         "name": "email",
                         "in": "query",
                         "description": "User's email",
+                        "required": true
+                    },
+                    {
+                        "name": "no_telefon",
+                        "in": "query",
+                        "description": "User's phone number",
                         "required": true
                     },
                     {
@@ -74,8 +80,11 @@
                     }
                 ],
                 "responses": {
-                    "default": {
-                        "description": "Welcome page"
+                    "200": {
+                        "description": "Request OK"
+                    },
+                    "401": {
+                        "description": "Validation failed"
                     }
                 }
             }

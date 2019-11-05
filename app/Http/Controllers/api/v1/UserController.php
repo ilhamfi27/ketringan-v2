@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Konsumen;
 
 class UserController extends Controller
 {
@@ -61,15 +62,21 @@ class UserController extends Controller
      *      path="/register",
      *      description="API for Login, the login will be generate token that must used by all pages that require authentication",
      *      @OA\Parameter(
-     *          name="name",
+     *          name="nama",
      *          in="query",
-     *          description="User's Name",
+     *          description="User's name",
      *          required=true,
      *      ),
      *      @OA\Parameter(
      *          name="email",
      *          in="query",
      *          description="User's email",
+     *          required=true,
+     *      ),
+     *      @OA\Parameter(
+     *          name="no_telefon",
+     *          in="query",
+     *          description="User's phone number",
      *          required=true,
      *      ),
      *      @OA\Parameter(
@@ -84,14 +91,22 @@ class UserController extends Controller
      *          description="Password confirmation",
      *          required=true,
      *      ),
-     *      @OA\Response(response="default", description="Welcome page")
+     *      @OA\Response(
+     *          response="200", 
+     *          description="Request OK",
+     *      ),
+     *      @OA\Response(
+     *          response="401", 
+     *          description="Validation failed",
+     *      ),
      * )
      */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
+            'nama' => 'required|regex:/^[a-zA-Z ]*$/',
+            'email' => 'required|email|unique:users',
+            'no_telefon' => 'required|numeric',
             'password' => 'required',
             'password_confirm' => 'required|same:password'
         ]);
@@ -103,10 +118,36 @@ class UserController extends Controller
         }
 
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
+
+        /**
+         * insert data ke table users
+         */
+        $input['password'] = bcrypt($input['email']);
         $user = User::create($input);
+        
         $success['token'] = $user->createToken('userRegister')->accessToken;
-        $success['name'] = $user->name;
+
+        /**
+         * insert data ke tabel tb_konsumen
+         */
+        $konsumen = new Konsumen();
+        $konsumen->Nama_Konsumen = $input['nama'];
+        $konsumen->No_Telfon_Konsumen = $input['no_telefon'];
+        $konsumen->Email_Konsumen = $input['email'];
+        $konsumen->Password = $input['password'];
+        $konsumen->user_id = $user->id;
+        $konsumen->save();
+
+        $success['nama_konsumen'] = $konsumen->Nama_Konsumen;
+        $success['email_konsumen'] = $user->email; // pakai email dari tabel users
+
+        /**
+         * $success untuk nilai balikan register()
+         * 
+         * $success['token']
+         * $success['nama_konsumen']
+         * $success['email_konsumen']
+         */
 
         return response()->json($success, 200);
     }
