@@ -122,7 +122,7 @@ class UserController extends Controller
         /**
          * insert data ke table users
          */
-        $input['password'] = bcrypt($input['email']);
+        $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         
         $success['token'] = $user->createToken('userRegister')->accessToken;
