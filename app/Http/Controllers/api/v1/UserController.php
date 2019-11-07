@@ -184,16 +184,33 @@ class UserController extends Controller
 
     public function token_confirmation(Request $request)
     {
+        $user = User::find($request->route('id'));
+        $token = $request->input('token');
+
+        if(isset($user->email_verified_at)) {
+            return response()->json([
+                'message' => 'Your email has been verified!',
+            ], 200);
+        }
+
         /**
          * to do:
          * 1. set notification if the user has verified their email
          */
-        $user = User::find($request->route('id'));
-        $token = $request->input('token');
-        if($user->verification_token == $token){
+        if($user->verification_token == $token && !isset($user->email_verified_at)){
             $user->email_verified_at = Carbon::now()->timestamp;
             $user->save();
         }
+
+        if ($user->verification_token != $token) {
+            return response()->json([
+                'message' => 'Invalid verification token!',
+            ], 401);
+        }
+
+        return response()->json([
+            'message' => 'Verification success!',
+        ], 200);
     }
 
     public function details()
