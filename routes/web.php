@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('testing_ae/', 'TestingAeController@index');
 Route::get('/', function () {
     return view('welcome');
 });

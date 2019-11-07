@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\api\v1;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Validator;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
+use App\Mail\RegistrationConfirmation;
+use App\User;
 use App\Konsumen;
+use Validator;
 
 class UserController extends Controller
 {
@@ -118,13 +121,22 @@ class UserController extends Controller
         }
 
         $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+
+        /**
+         * generate token untuk konfirmasi email
+         */
+        $generated_token = hash('sha256', str_random(40).$input['email']);
+        $input['verification_token'] = $generated_token;
 
         /**
          * insert data ke table users
          */
-        $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         
+        /**
+         * token untuk login aplikasi
+         */
         $success['token'] = $user->createToken('userRegister')->accessToken;
 
         /**
@@ -142,14 +154,46 @@ class UserController extends Controller
         $success['email_konsumen'] = $user->email; // pakai email dari tabel users
 
         /**
+         * Mail sender untuk mengirimkan token konfirmasi
+         * ke email user
+         */
+        $must_confirm = (object) [
+            'id' => $user->id,
+            'url' => env('APP_URL'),
+            'nama' => $konsumen->Nama_Konsumen,
+            'token' => $generated_token,
+        ];
+        Mail::to($user)->send(new RegistrationConfirmation($must_confirm));
+        
+        if (count(Mail::failures()) > 0) {
+            return response()->json([
+                "error" => "Mail not successfully sent!",
+            ], 500);
+        }
+        
+        /**
          * $success untuk nilai balikan register()
          * 
-         * $success['token']
-         * $success['nama_konsumen']
-         * $success['email_konsumen']
+         * $success['token'] -> token
+         * $success['nama_konsumen'] -> nama konsumen
+         * $success['email_konsumen'] -> email konsumen
          */
 
         return response()->json($success, 200);
+    }
+
+    public function token_confirmation(Request $request)
+    {
+        /**
+         * to do:
+         * 1. set notification if the user has verified their email
+         */
+        $user = User::find($request->route('id'));
+        $token = $request->input('token');
+        if($user->verification_token == $token){
+            $user->email_verified_at = Carbon::now()->timestamp;
+            $user->save();
+        }
     }
 
     public function details()

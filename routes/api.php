@@ -15,7 +15,10 @@ use Illuminate\Http\Request;
 Route::prefix('v1')->group(function (){
     Route::post('login', 'api\v1\UserController@login');
     Route::post('register', 'api\v1\UserController@register');
+    Route::get('token_confirmation/{id}', 'api\v1\UserController@token_confirmation');
     Route::group(['middleware' => 'auth:api'], function () {
-        Route::post('details', 'api\v1\UserController@details');
+        Route::group(['middleware' => ['verified']], function () {
+            Route::post('details', 'api\v1\UserController@details');
+        });
     });
 });
