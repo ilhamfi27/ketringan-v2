@@ -42,4 +42,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne('App\Konsumen');
     }
+
+    public function socialized_accounts()
+    {
+        return $this->hasMany('App\SocializedAccount');
+    }
 }

@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('google_register', 'SocialAuthGoogleController@register');
-Route::get('google_register_callback', 'SocialAuthGoogleController@google_register_callback');
+Route::get('google_login', 'SocialAuthGoogleController@login');
+Route::get('google_login_callback', 'SocialAuthGoogleController@login_callback');
 Route::get('testing_ae/', 'TestingAeController@index');
 Route::get('/', function () {
     return view('welcome');
