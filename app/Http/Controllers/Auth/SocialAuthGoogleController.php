@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -52,8 +52,32 @@ class SocialAuthGoogleController extends Controller
                 $socializedAccount->provider = 'google';
                 $socializedAccount->user_id = $user->id;
                 $socializedAccount->save();
-                echo "registered!";
+
+                /**
+                 * token untuk login aplikasi
+                 */
+                $success['token'] = $user->createToken('userRegister')->accessToken;
+                
+                $success['nama_konsumen'] = $data_user->Nama_Konsumen;
+                $success['email_konsumen'] = $user->email; // pakai email dari tabel users
+        
+                /**
+                 * $success untuk nilai balikan register()
+                 * 
+                 * $success['token'] -> token
+                 * $success['nama_konsumen'] -> nama konsumen
+                 * $success['email_konsumen'] -> email konsumen
+                 */
+
+                return response()->json($success, 200);
             }
+
+            $user = Auth::user();
+            $success['token'] = $user->createToken('userLogin')->accessToken;
+            return response()->json([
+                'success' => $success
+            ], 200);
+
         } catch (Exception $e) {
             return 'error: ' . $e;
         }
@@ -71,10 +95,7 @@ class SocialAuthGoogleController extends Controller
         if(isset($socializedUser)){
             $user = User::find($socializedUser->user_id);
             Auth::login($user);
-            if(Auth::check()){
-                echo "logged in!";
-                return true;
-            }
+            return Auth::check();
         }
         return false;
     }
