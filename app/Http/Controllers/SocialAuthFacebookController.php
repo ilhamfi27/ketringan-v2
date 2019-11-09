@@ -12,44 +12,44 @@ use App\User;
 use App\Konsumen;
 use App\SocializedAccount;
 
-class SocialAuthGoogleController extends Controller
+class SocialAuthFacebookController extends Controller
 {
-    private $googleSocialite;
+    private $facebookSocialite;
 
     public function __construct() {
-        $this->googleSocialite = Socialite::driver('google');
+        $this->facebookSocialite = Socialite::driver('facebook');
     }
 
     public function login()
     {
-        return $this->googleSocialite->redirect();
+        return $this->facebookSocialite->redirect();
     }
 
     public function login_callback()
     {
         try {
-            $googleUser = $this->googleSocialite->user();
+            $facebookUser = $this->facebookSocialite->user();
 
-            $googleId = $googleUser->id;
+            $facebookId = $facebookUser->id;
 
-            if(!$this->userSocialiteRegistered($googleId)){
+            if(!$this->userSocialiteRegistered($facebookId)){
                 $user = new User;
                 $random_password = str_random(40);
-                $user->email = $googleUser->email;
+                $user->email = $facebookUser->email;
                 $user->password = $random_password;
                 $user->email_verified_at = Carbon::now()->timestamp;
                 $user->save();
     
                 $data_user = new Konsumen;
-                $data_user->Nama_Konsumen = $googleUser->name;
-                $data_user->Foto_Profil_Konsumen = $googleUser->avatar;
+                $data_user->Nama_Konsumen = $facebookUser->name;
+                $data_user->Foto_Profil_Konsumen = $facebookUser->avatar;
                 $data_user->Password = $random_password;
                 $data_user->user_id = $user->id;
                 $data_user->save();
     
                 $socializedAccount = new SocializedAccount;
-                $socializedAccount->account_id = $googleUser->id;
-                $socializedAccount->provider = 'google';
+                $socializedAccount->account_id = $facebookUser->id;
+                $socializedAccount->provider = 'facebook';
                 $socializedAccount->user_id = $user->id;
                 $socializedAccount->save();
                 echo "registered!";
@@ -59,12 +59,12 @@ class SocialAuthGoogleController extends Controller
         }
     }
 
-    private function userSocialiteRegistered($googleId)
+    private function userSocialiteRegistered($facebookId)
     {
         $socializedAccount = 
                 SocializedAccount::where([
-                    ['account_id', '=', $googleId],
-                    ['provider', '=', 'google'],
+                    ['account_id', '=', $facebookId],
+                    ['provider', '=', 'facebook'],
                 ]);
         $socializedUser = $socializedAccount->first();
         
