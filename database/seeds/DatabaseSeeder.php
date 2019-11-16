@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             MultiValueRegionTableSeeder::class,
             JenisPaketTableSeeder::class,
             KategoriPaketTableSeeder::class,
+            BannerTableSeeder::class,
+            TestimoniTableSeeder::class,
         ]);
     }
 }

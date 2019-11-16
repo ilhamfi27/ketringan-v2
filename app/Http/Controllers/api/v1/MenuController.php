@@ -25,7 +25,7 @@ class MenuController extends Controller
         $menu = Menu::getMenu($id_region, $id_kategori, $max_price, $min_price);
         
         return response()->json([
-            'response' => 'OK',
+            'error' => 'false',
             'data' => $menu
         ], 200);
     }

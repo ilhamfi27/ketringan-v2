@@ -16,6 +16,10 @@ Route::prefix('v1')->group(function (){
     Route::post('login', 'api\v1\UserController@login');
     Route::post('register', 'api\v1\UserController@register');
     Route::get('token_confirmation/{id}', 'api\v1\UserController@token_confirmation');
+    Route::group(['prefix' => 'page_content'], function () {
+        Route::get('banner/', 'api\v1\PageContentController@active_banner');
+        Route::get('testimoni/', 'api\v1\PageContentController@active_testimoni');
+    });
     Route::group(['prefix' => 'menu'], function () {
         Route::get('/', 'api\v1\MenuController@all');
     });
