@@ -27,7 +27,7 @@ class Konsumen extends Model
     /**
      * Relasi dengan user
      */
-    public function User()
+    public function user()
     {
         return $this->belongsTo('App\User');
     }
