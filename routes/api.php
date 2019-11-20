@@ -24,6 +24,14 @@ Route::prefix('v1')->group(function (){
     Route::group(['prefix' => 'menu'], function () {
         Route::get('/', 'api\v1\MenuController@all');
     });
+
+    Route::group(['prefix' => 'vendor'], function () {
+        Route::post('partnership_request', 'api\v1\VendorController@partnership_request');
+    });
+
+    Route::group(['prefix' => 'konsumen'], function () {
+        Route::get('activated_membership/', 'api\v1\KonsumenController@get_activated_membership');
+    });
     
     Route::group(['middleware' => 'auth:api'], function () {
         // authenticated account needed
@@ -34,6 +42,7 @@ Route::prefix('v1')->group(function (){
             Route::post('details', 'api\v1\UserController@details');
             Route::group(['prefix' => 'konsumen'], function () {
                 Route::post('request_membership/', 'api\v1\KonsumenController@membership_request');
+                Route::get('get_membership_request/', 'api\v1\KonsumenController@get_membership_request');
             });
         });
     });
