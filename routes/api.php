@@ -16,11 +16,14 @@ Route::prefix('v1')->group(function (){
     Route::post('login', 'api\v1\UserController@login');
     Route::post('register', 'api\v1\UserController@register');
 
-    Route::group(['prefix' => 'page_content'], function () {
-        Route::get('banner/', 'api\v1\PageContentController@active_banner');
-        Route::get('testimoni/', 'api\v1\PageContentController@active_testimoni');
+    Route::group(['prefix' => 'banner'], function () {
+        Route::get('active_banner/', 'api\v1\BannerController@active_banner');
     });
-    
+
+    Route::group(['prefix' => 'testimoni'], function () {
+        Route::get('active_testimoni/', 'api\v1\TestimoniController@active_testimoni');
+    });
+
     Route::group(['prefix' => 'menu'], function () {
         Route::get('/', 'api\v1\MenuController@all');
     });
