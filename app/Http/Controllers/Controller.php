@@ -20,8 +20,16 @@ class Controller extends BaseController
      *      )
      * ),
      * @OA\Server(
-     *      url="localhost:8000/api/v1",
+     *      url="localhost:8000",
      *      description="Main development server"
-     * )
+     * ),
+     * @SWG\Swagger(
+     *      schemes={"https"},
+     *      @SWG\SecurityScheme(
+     *          securityDefinition="Bearer",
+     *          type="http",
+     *          name="Authorization",
+     *          in="header"
+     * ),
      */
 }

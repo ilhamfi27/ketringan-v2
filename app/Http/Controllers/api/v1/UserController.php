@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     /**
      * @OA\Post(
-     *      path="/login",
+     *      path="/api/v1/login",
      *      description="API for Login, the login will be generate token that must used by all pages that require authentication",
      *      @OA\Parameter(
      *          name="email",
@@ -62,7 +62,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/register",
+     *      path="/api/v1/register",
      *      description="API for Login, the login will be generate token that must used by all pages that require authentication",
      *      @OA\Parameter(
      *          name="nama",
@@ -182,6 +182,26 @@ class UserController extends Controller
         return response()->json($success, 200);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/v1/token_confirmation/{id}",
+     *      description="Token confirmation after registering",
+     *      @OA\Parameter(
+     *          name="token",
+     *          in="query",
+     *          description="Users registration Token",
+     *          required=true,
+     *      ),
+     *      @OA\Response(
+     *          response="200", 
+     *          description="Request OK",
+     *      ),
+     *      @OA\Response(
+     *          response="401", 
+     *          description="Invalid verification token",
+     *      ),
+     * )
+     */
     public function token_confirmation(Request $request)
     {
         $user = User::find($request->route('id'));
@@ -193,10 +213,6 @@ class UserController extends Controller
             ], 200);
         }
 
-        /**
-         * to do:
-         * 1. set notification if the user has verified their email
-         */
         if($user->verification_token == $token && !isset($user->email_verified_at)){
             $user->email_verified_at = Carbon::now()->timestamp;
             $user->save();
@@ -212,7 +228,24 @@ class UserController extends Controller
             'message' => 'Verification success!',
         ], 200);
     }
-
+    
+    /**
+     * @OA\Get(
+     *      path="/api/v1/details",
+     *      description="Get user detail",
+     *      @OA\Response(
+     *          response="200", 
+     *          description="Request OK",
+     *      ),
+     *      @OA\Response(
+     *          response="401", 
+     *          description="Invalid verification token",
+     *      ),
+     *      security={
+     *          {"Bearer":{}}
+     *      }
+     * )
+     */
     public function details()
     {
         $user = Auth::user();

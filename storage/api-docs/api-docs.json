@@ -10,12 +10,70 @@
     },
     "servers": [
         {
-            "url": "localhost:8000/api/v1",
+            "url": "localhost:8000",
             "description": "Main development server"
         }
     ],
     "paths": {
-        "/login": {
+        "/api/v1/banner/active_banner": {
+            "get": {
+                "description": "Get All Active Banner",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\BannerController::active_banner",
+                "parameters": [
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Get Banner with active status true or false, default status is true",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/konsumen/request_membership": {
+            "get": {
+                "description": "Request membership for konsumen",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\KonsumenController::membership_request",
+                "parameters": [
+                    {
+                        "name": "No_Telfon",
+                        "in": "query",
+                        "description": "User's phone number",
+                        "required": true
+                    },
+                    {
+                        "name": "Alamat",
+                        "in": "query",
+                        "description": "User's address",
+                        "required": true
+                    },
+                    {
+                        "name": "Catatan",
+                        "in": "query",
+                        "description": "User's note",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request OK"
+                    },
+                    "401": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/login": {
             "post": {
                 "description": "API for Login, the login will be generate token that must used by all pages that require authentication",
                 "operationId": "App\\Http\\Controllers\\api\\v1\\UserController::login",
@@ -43,7 +101,7 @@
                 }
             }
         },
-        "/register": {
+        "/api/v1/register": {
             "post": {
                 "description": "API for Login, the login will be generate token that must used by all pages that require authentication",
                 "operationId": "App\\Http\\Controllers\\api\\v1\\UserController::register",
@@ -87,6 +145,47 @@
                         "description": "Validation failed"
                     }
                 }
+            }
+        },
+        "/api/v1/token_confirmation/{id}": {
+            "get": {
+                "description": "Token confirmation after registering",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\UserController::token_confirmation",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "Users registration Token",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request OK"
+                    },
+                    "401": {
+                        "description": "Invalid verification token"
+                    }
+                }
+            }
+        },
+        "/api/v1/details": {
+            "get": {
+                "description": "Get user detail",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\UserController::details",
+                "responses": {
+                    "200": {
+                        "description": "Request OK"
+                    },
+                    "401": {
+                        "description": "Invalid verification token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         }
     }
