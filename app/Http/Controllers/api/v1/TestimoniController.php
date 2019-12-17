@@ -32,7 +32,7 @@ class TestimoniController extends Controller
                     $testimoni->where('Status_Testimoni', 'disable')->get() : $testimoni->get();
 
         return response()->json([
-            'error' => 'false',
+            'success' => TRUE,
             'data' => $testimoni
         ], 200);
     }

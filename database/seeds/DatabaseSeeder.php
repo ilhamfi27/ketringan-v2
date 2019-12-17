@@ -12,13 +12,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            RegionTableSeeder::class,
-            SubRegionTableSeeder::class,
-            MultiValueRegionTableSeeder::class,
+            BannerTableSeeder::class,
             JenisPaketTableSeeder::class,
             KategoriPaketTableSeeder::class,
-            BannerTableSeeder::class,
+            MenuPaketTableSeeder::class,
+            MultivalueKategoriMenu::class,
+            MultiValueRegionTableSeeder::class,
+            RegionTableSeeder::class,
+            SubRegionTableSeeder::class,
             TestimoniTableSeeder::class,
+            VendorTableSeeder::class,
         ]);
     }
 }

@@ -35,7 +35,7 @@
             }
         },
         "/api/v1/konsumen/request_membership": {
-            "get": {
+            "post": {
                 "description": "Request membership for konsumen",
                 "operationId": "App\\Http\\Controllers\\api\\v1\\KonsumenController::membership_request",
                 "parameters": [
@@ -71,6 +71,73 @@
                         "Bearer": []
                     }
                 ]
+            }
+        },
+        "/api/v1/konsumen/activated_membership": {
+            "get": {
+                "description": "Get activated membership for konsumen",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\KonsumenController::get_activated_membership",
+                "responses": {
+                    "200": {
+                        "description": "Request OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/menu": {
+            "get": {
+                "description": "Get All Menu",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\MenuController::all",
+                "parameters": [
+                    {
+                        "name": "id_region",
+                        "in": "query",
+                        "description": "Get Menu Where Id Region is x",
+                        "required": false
+                    },
+                    {
+                        "name": "id_kategori",
+                        "in": "query",
+                        "description": "Get Menu Where Id Kategori is x",
+                        "required": false
+                    },
+                    {
+                        "name": "max_price",
+                        "in": "query",
+                        "description": "Get Menu Where Max Price is x",
+                        "required": false
+                    },
+                    {
+                        "name": "min_price",
+                        "in": "query",
+                        "description": "Get Menu Where Min Price is x",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/testimoni/active_testimoni": {
+            "get": {
+                "description": "Get All Active Testimoni",
+                "operationId": "App\\Http\\Controllers\\api\\v1\\TestimoniController::active_testimoni",
+                "parameters": [
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Get Testimoni with active status true or false, default status is true",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request OK"
+                    }
+                }
             }
         },
         "/api/v1/login": {
@@ -186,6 +253,39 @@
                         "Bearer": []
                     }
                 ]
+            }
+        },
+        "/api/v1/vendor/partnership_request": {
+            "post": {
+                "description": "Request partnership for vendor",
+                "parameters": [
+                    {
+                        "name": "No_Telfon",
+                        "in": "query",
+                        "description": "User's phone number",
+                        "required": true
+                    },
+                    {
+                        "name": "Alamat",
+                        "in": "query",
+                        "description": "User's address",
+                        "required": true
+                    },
+                    {
+                        "name": "Catatan",
+                        "in": "query",
+                        "description": "User's note",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request OK"
+                    },
+                    "401": {
+                        "description": "Validation error"
+                    }
+                }
             }
         }
     }

@@ -52,6 +52,7 @@ class VendorController extends Controller
 
         if($validator->fails()){
             return response()->json([
+                'success' => FALSE,
                 'error' => $validator->errors()
             ], 401);
         }
@@ -65,13 +66,13 @@ class VendorController extends Controller
 
         if (!$data_saved) {
             return response()->json([
-                'error' => 'true',
+                'success' => FALSE,
                 'message' => 'Internal Server Error',
             ], 500);
         }
 
         return response()->json([
-            'error' => 'false',
+            'success' => TRUE,
         ], 200);
     }
 }

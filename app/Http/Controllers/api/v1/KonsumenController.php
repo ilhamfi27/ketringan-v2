@@ -126,7 +126,7 @@ class KonsumenController extends Controller
         $membership_request = MembershipRequest::where('Id_Konsumen', $id_konsumen)->get();
 
         return response()->json([
-            'error' => 'false',
+            'success' => TRUE,
             'data' => $membership_request,
         ], 200);
     }

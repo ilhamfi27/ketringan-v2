@@ -36,7 +36,6 @@ class RegistrationConfirmation extends Mailable
     public function build()
     {
         return $this->subject("Konfirmasi Akun Pelanggan Ketringan")
-                    ->from('staging@ketringan.com')
                     ->view('email.auth.register_confirmation')
                     ->with([
                         'nama' => $this->nama,

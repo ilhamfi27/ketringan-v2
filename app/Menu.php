@@ -33,18 +33,11 @@ class Menu extends Model
             ->join('tb_subregion', 'tb_subregion.Id_Subregion', '=', 'tb_vendor.Id_Subregion')
             ->join('tb_mv_region', 'tb_mv_region.Id_Subregion', '=', 'tb_subregion.Id_Subregion')
             ->join('tb_region', 'tb_region.Id_Region', '=', 'tb_mv_region.Id_Region')
-            ->join('tb_mv_kategorimenu', 'tb_mv_kategorimenu.Id_Menu_Paket', '=', 'tb_menu_paket.Id_Menu_Paket')
-            ->join('tb_kategori_paket', 'tb_kategori_paket.Id_Kategori_Menu', '=', 'tb_mv_kategorimenu.Id_Kategori_Menu')
-            ->join('tb_jenis_paket', 'tb_jenis_paket.Id_Jenis_Menu', '=', 'tb_kategori_paket.Id_Jenis_Menu')
             ->select('tb_menu_paket.*', 'tb_region.Region', 'tb_subregion.Subregion', 
-                        'tb_vendor.*', 'tb_kategori_paket.Nama_Kategori', 'tb_jenis_paket.Nama_Jenis');
+                        'tb_vendor.*');
 
         if ($region != null) {
             $menu->where('tb_region.Id_Region', '=', $region);
-        }
-
-        if ($kategori_menu != null) {
-            $menu->where('tb_mv_kategorimenu.Id_Kategori_Menu', '=', $kategori_menu);
         }
 
         if ($max_price != null) {
