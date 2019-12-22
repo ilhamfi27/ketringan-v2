@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
             JenisPaketTableSeeder::class,
             KategoriPaketTableSeeder::class,
             MenuPaketTableSeeder::class,
-            MultivalueKategoriMenu::class,
-            MultiValueRegionTableSeeder::class,
             RegionTableSeeder::class,
             SubRegionTableSeeder::class,
             TestimoniTableSeeder::class,
             VendorTableSeeder::class,
+            MultivalueKategoriMenuTableSeeder::class,
+            MultiValueRegionTableSeeder::class,
         ]);
     }
 }
