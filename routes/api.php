@@ -40,10 +40,10 @@ Route::prefix('v1')->group(function (){
     
     Route::group(['middleware' => 'auth:api'], function () {
         // authenticated account needed
+        Route::post('details', 'api\v1\UserController@details');
         
         // verified account needed
         Route::group(['middleware' => ['verified']], function () {
-            Route::post('details', 'api\v1\UserController@details');
             Route::group(['prefix' => 'konsumen'], function () {
                 Route::post('request_membership/', 'api\v1\KonsumenController@membership_request');
                 Route::get('get_membership_request/', 'api\v1\KonsumenController@get_membership_request');
