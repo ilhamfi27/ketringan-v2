@@ -26,7 +26,7 @@ class Menu extends Model
     ];
 
     public static function getMenu(
-        $region = null, $kategori_menu = null, $max_price = null, $min_price = null)
+        $region = null, $max_price = null, $min_price = null, $pagination_num = null)
     {
         $menu = DB::table('tb_menu_paket')
             ->join('tb_vendor', 'tb_vendor.Id_Vendor', '=', 'tb_menu_paket.Id_Vendor')
@@ -48,6 +48,6 @@ class Menu extends Model
             $menu->where('tb_menu_paket.Harga_Paket', '>=', $min_price);
         }
 
-        return $menu->get();
+        return $pagination_num != null ? $menu->paginate($pagination_num) : $menu->paginate() ;
     }
 }
