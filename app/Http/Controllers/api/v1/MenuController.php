@@ -52,8 +52,11 @@ class MenuController extends Controller
 
         $min_price = $request->input('min_price') != null ? 
                     $request->input('min_price') : null;
-        
-        $menu = Menu::getMenu($id_region, $max_price, $min_price);
+
+        $pagination_num = $request->input('pagination_num') != null ? 
+                    $request->input('pagination_num') : null;
+
+        $menu = Menu::getMenu($id_region, $max_price, $min_price, $pagination_num);
         
         return response()->json([
             'success' => TRUE,
