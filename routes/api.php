@@ -17,7 +17,7 @@ Route::prefix('v1')->group(function (){
     Route::post('register', 'api\v1\UserController@register');
 
     Route::group(['prefix' => 'banner'], function () {
-        Route::get('active_banner/', 'api\v1\BannerController@active_banner')->middleware('cors');
+        Route::get('active_banner/', 'api\v1\BannerController@active_banner');
     });
 
     Route::group(['prefix' => 'testimoni'], function () {
@@ -25,7 +25,7 @@ Route::prefix('v1')->group(function (){
     });
 
     Route::group(['prefix' => 'menu'], function () {
-        Route::get('/', 'api\v1\MenuController@all')->middleware('cors');
+        Route::get('/', 'api\v1\MenuController@all');
     });
 
     Route::group(['prefix' => 'vendor'], function () {
