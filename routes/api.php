@@ -44,6 +44,13 @@ Route::prefix('v1')->group(function (){
         
         // verified account needed
         Route::group(['middleware' => ['verified']], function () {
+            
+            // routes for cart
+            Route::group(['prefix' => 'cart'], function () {
+                Route::post('store/', 'api\v1\CartController@store');
+            });
+
+            // routes for konsumen
             Route::group(['prefix' => 'konsumen'], function () {
                 Route::post('request_membership/', 'api\v1\KonsumenController@membership_request');
                 Route::get('get_membership_request/', 'api\v1\KonsumenController@get_membership_request');
