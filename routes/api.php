@@ -48,6 +48,8 @@ Route::prefix('v1')->group(function (){
             // routes for cart
             Route::group(['prefix' => 'cart'], function () {
                 Route::post('store/', 'api\v1\CartController@store');
+                Route::match(['PUT', 'PATCH'], 'quantity_change/', 'api\v1\CartController@quantity_change');
+                Route::delete('destroy/', 'api\v1\CartController@destroy');
             });
 
             // routes for konsumen
