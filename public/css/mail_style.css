@@ -1,0 +1,25 @@
+body {
+    padding: 0px;
+    margin: 0px;
+}
+#wrapper {
+    width: 100%;
+    display: block;
+    position: relative;
+}
+#header, #content, #footer {
+    position: relative;
+    max-width: 600px;
+    min-height: 50px;
+    margin: auto;
+}
+#header {
+    background: #a72f4a;
+
+}
+#content {
+    background: #ffffff;
+}
+#footer {
+    background: #a72f4a;
+}
