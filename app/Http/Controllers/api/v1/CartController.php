@@ -21,7 +21,7 @@ class CartController extends Controller
         $items = [];
 
         foreach ($cart_items as $key => $value) {
-            $cart_items->push('menu', $value->menu->first());
+            $cart_items[$key]['menu'] = $value->menu->first();
         }
 
         return response()->json([
