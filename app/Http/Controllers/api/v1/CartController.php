@@ -11,6 +11,29 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+
+    public function all()
+    {
+        $user = Auth::user();
+        $id_konsumen = $user->konsumen()->first()->Id_Konsumen;
+        $match_condition = ['id_konsumen' => $id_konsumen,];
+        $cart_items = Cart::where($match_condition)->get();
+        $items = [];
+
+        foreach ($cart_items as $key => $value) {
+            $cart_with_menus = [
+                $value,
+                ['menu' => $value->menu->get()]
+            ];
+            array_push($items, $cart_with_menus);
+        }
+
+        return response()->json([
+            'success' => TRUE,
+            'data' => $items,
+        ], 200);
+    }
+
     public function store(Request $request)
     {
         $user           = Auth::user();
@@ -20,7 +43,7 @@ class CartController extends Controller
 
         foreach ($request->id_menu as $idx => $id) {
             array_push($cart_data, [
-                'id_konsumen'   => 29,
+                'id_konsumen'   => $id_konsumen,
                 'id_menu'       => $id,
                 'quantity'      => $quantities[$idx],
                 'created_at'    => Carbon::now(),

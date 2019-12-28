@@ -21,4 +21,9 @@ class Cart extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function menu()
+    {
+        return $this->hasOne('App\Menu', 'Id_Menu_Paket', 'id_menu');
+    }
 }

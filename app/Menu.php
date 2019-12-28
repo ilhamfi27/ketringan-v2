@@ -25,6 +25,11 @@ class Menu extends Model
         'Kategori_Paket', 'Id_Vendor', 'Id_Diskon'
     ];
 
+    public function cart()
+    {
+        return $this->belongsTo('App\Cart');
+    }
+
     public static function getMenu(
         $region = null, $max_price = null, $min_price = null, $pagination_num = null)
     {
