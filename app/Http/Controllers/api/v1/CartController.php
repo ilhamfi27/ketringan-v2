@@ -21,16 +21,12 @@ class CartController extends Controller
         $items = [];
 
         foreach ($cart_items as $key => $value) {
-            $cart_with_menus = [
-                $value,
-                ['menu' => $value->menu->get()]
-            ];
-            array_push($items, $cart_with_menus);
+            $cart_items->push('menu', $value->menu->first());
         }
 
         return response()->json([
             'success' => TRUE,
-            'data' => $items,
+            'data' => $cart_items,
         ], 200);
     }
 
