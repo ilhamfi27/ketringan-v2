@@ -37,6 +37,26 @@ class CartController extends Controller
         $quantities     = $request->quantity;
         $cart_data      = [];
 
+        /**
+         * check menu on cart by customer id
+         * if exists, the correspond item quantity will plus by 1
+         */
+        $cart_item = Cart::where('id_konsumen', $id_konsumen)
+                        ->whereIn('id_menu', $request->id_menu);
+        $cart_item_exist = $cart_item->count() > 0 ? TRUE : FALSE;
+
+        if ($cart_item_exist){
+            $items = $cart_item->get();
+            foreach ($items as $item) {
+                $item->quantity += 1;
+                $item->save();
+            }
+            return response()->json([
+                'success' => TRUE,
+                'message' => 'Data Updated!'
+            ], 200);
+        }
+
         foreach ($request->id_menu as $idx => $id) {
             array_push($cart_data, [
                 'id_konsumen'   => $id_konsumen,
