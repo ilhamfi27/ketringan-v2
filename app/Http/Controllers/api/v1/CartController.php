@@ -21,7 +21,10 @@ class CartController extends Controller
         $items = [];
 
         foreach ($cart_items as $key => $value) {
-            $cart_items[$key]['menu'] = $value->menu->first();
+            $menu = $value->menu;
+            $minimal_pemesanan = $menu->vendor()->first()->Minimal_Pemesanan;
+            $menu['Minimal_Pemesanan'] = $minimal_pemesanan;
+            $cart_items[$key]['menu'] = $menu;
         }
 
         return response()->json([
