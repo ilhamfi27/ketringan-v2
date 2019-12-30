@@ -13,7 +13,7 @@ class CreateOrderedMenusTable extends Migration
      */
     public function up()
     {
-        Schema::create('ordered_menus', function (Blueprint $table) {
+        Schema::create('tb_paket_dipesan', function (Blueprint $table) {
             $table->bigInteger('Id_Pesanan')->unsigned();
             $table->bigInteger('Id_Menu_Paket')->unsigned();
             $table->integer('Jumlah_Kotak');
@@ -39,6 +39,6 @@ class CreateOrderedMenusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ordered_menus');
+        Schema::dropIfExists('tb_paket_dipesan');
     }
 }
