@@ -14,7 +14,7 @@ class Banner extends Model
     /**
      * Deklarasi custom primary key 
      */
-    protected $primary_key = 'Id_Banner';
+    protected $primaryKey = 'Id_Banner';
 
     /**
      * atribut yang dapat diisi

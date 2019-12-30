@@ -14,7 +14,7 @@ class Konsumen extends Model
     /**
      * Deklarasi custom primary key 
      */
-    protected $primary_key = 'Id_Konsumen';
+    protected $primaryKey = 'Id_Konsumen';
 
     /**
      * atribut yang dapat diisi

@@ -14,7 +14,7 @@ class Testimoni extends Model
     /**
      * Deklarasi custom primary key 
      */
-    protected $primary_key = 'Id_Testimoni';
+    protected $primaryKey = 'Id_Testimoni';
 
     /**
      * atribut yang dapat diisi

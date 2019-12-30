@@ -15,7 +15,7 @@ class Menu extends Model
     /**
      * Deklarasi custom primary key 
      */
-    protected $primary_key = 'Id_Menu_Paket';
+    protected $primaryKey = 'Id_Menu_Paket';
 
     /**
      * atribut yang dapat diisi
@@ -28,6 +28,11 @@ class Menu extends Model
     public function cart()
     {
         return $this->belongsTo('App\Cart');
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo('App\Vendor', 'Id_Menu_Paket', 'Id_Vendor');
     }
 
     public static function getMenu(

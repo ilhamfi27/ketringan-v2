@@ -14,7 +14,7 @@ class PartnershipRequest extends Model
     /**
      * Deklarasi custom primary key 
      */
-    protected $primary_key = 'Id';
+    protected $primaryKey = 'Id';
 
     /**
      * atribut yang dapat diisi
