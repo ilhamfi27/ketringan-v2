@@ -22,8 +22,8 @@ class OrderController extends Controller
     {
         $uniqueCode = rand(1,300);
         $checkout = $request->all();
-        $checkout['Total_Harga'] = 
-                Menu::sumPrices($checkout['Id_Menu_Paket']) - $uniqueCode;
+        $checkout['Total_Harga'] = Menu::sumPrices($checkout['Id_Menu_Paket'], 
+                        $checkout['Jumlah_Pemesanan']) - $uniqueCode;
 
         DB::beginTransaction();
         try {
@@ -125,10 +125,18 @@ class OrderController extends Controller
             ];
 
             Mail::to($user)->send(new MakePayment($paymentDetail));
-
+        
+            return response()->json([
+                'success' => TRUE,
+                'message' => 'Checkout Berhasil!',
+            ], 200);
         } catch (\Exception $e) {
-            echo $e;
             DB::rollback();
+        
+            return response()->json([
+                'success' => TRUE,
+                'message' => $e,
+            ], 200);
         }
     }
 

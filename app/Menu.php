@@ -61,11 +61,12 @@ class Menu extends Model
         return $pagination_num != null ? $menu->paginate($pagination_num) : $menu->paginate() ;
     }
 
-    public static function sumPrices($menuIds)
+    public static function sumPrices($menuIds, $qty)
     {
-        return DB::table('tb_menu_paket')
-            ->select(DB::raw('SUM(Harga_Paket) as Total_Harga'))
-            ->whereIn('Id_Menu_Paket', $menuIds)
-            ->first()->Total_Harga;
+        $totalPrice = 0;
+        foreach ($menuIds as $idx => $id) {
+            $totalPrice += (self::find($id)->Harga_Paket) * $qty[$idx];
+        }
+        return $totalPrice;
     }
 }
