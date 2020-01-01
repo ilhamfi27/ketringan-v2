@@ -87,10 +87,6 @@
 			cursor: default;
 		}
 
-			{
-			color: #5555ff;
-		}
-
 		span {
 			color: inherit;
 			border-bottom: none;
@@ -659,7 +655,7 @@ float:right !important;
 																																					<tr>
 																																						<td valign="top" style="padding:10px">
 																																							<div style="text-align:left;font-family:Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:15px;color:#000000;line-height:26px;mso-line-height:exactly;mso-text-raise:5px">
-																																								<p style="padding: 0; margin: 0;text-align: center;">Hi {{ $nama }},<br>Terima kasih sudah daftar di KETRINGAN.<br>Kami tahu susahnya mencari vendor katering yang sesuai dengan kebutuhan Anda. Karena itu kamu akan senang dengan
+																																								<p style="padding: 0; margin: 0;text-align: center;">Hi <?= $nama ?>,<br>Terima kasih sudah daftar di KETRINGAN.<br>Kami tahu susahnya mencari vendor katering yang sesuai dengan kebutuhan Anda. Karena itu kamu akan senang dengan
 																																									KETRINGAN.<br>Ayo mulai bertransaksi, klik tombol dibawah ini untuk mengaktifkan akun</p>
 																																							</div>
 																																						</td>

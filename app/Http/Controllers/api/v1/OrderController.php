@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\api\v1;
 
+use App\Bank;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\MakePayment;
 use Illuminate\Support\Facades\Auth;
 use App\Menu;
 use App\Order;
@@ -12,6 +14,7 @@ use App\Payment;
 use App\Transfer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -37,12 +40,13 @@ class OrderController extends Controller
             $lastOrder = Order::latest()->first();
             $idKonsumen = $this->getKonsumenId();
             
-            $kodePesanan = $lastOrder == null ? 1 : $lastOrder->Id_Pesanan + 1;
+            $kodePesanan = 'PSNE'.date('ymd')
+                        .($lastOrder == null ? 1 : $lastOrder->Id_Pesanan + 1);
             
             $orderCompleteData = [
                 'Tanggal_Pesan' => Carbon::now(),
                 'Id_Konsumen' => $idKonsumen,
-                'Kode_Pesanan' => 'PSNE'.date('ymd').$kodePesanan,
+                'Kode_Pesanan' => $kodePesanan,
             ];
             $order = Order::create($checkout + $orderCompleteData);
 
@@ -98,14 +102,36 @@ class OrderController extends Controller
                 'Tgl_Batas_Transfer' => Carbon::now()->subDays(1),
             ];
             $transfer = Transfer::create($checkout + $transferCompleteData);
+            /**
+             * End of transfer insertion section
+             */
 
             DB::commit();
+            
+            $user = Auth::user();
+            $paymentDetail = (object) [
+                'data_menu' => Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket']),
+                'syarat' => '#',
+                'link' => '#',
+                'data_bank' => Bank::find($checkout['Id_Bank']),
+                'nama' => $checkout['nama'],
+                'kode_pesanan' => $kodePesanan,
+                'kode_unik' => $uniqueCode,
+                'alamat' => $checkout['Alamat_Pengiriman'],
+                'tanggal' => $checkout['Tanggal_Kegiatan'],
+                'waktu' => $checkout['Waktu_Kegiatan'],
+                'total_biaya' => $checkout['Total_Harga'],
+                'potongan' => $checkout['Potongan_Diskon'],
+            ];
+
+            Mail::to($user)->send(new MakePayment($paymentDetail));
+
         } catch (\Exception $e) {
             echo $e;
             DB::rollback();
         }
     }
-    
+
     private function getKonsumenId()
     {
         $user = Auth::user();
