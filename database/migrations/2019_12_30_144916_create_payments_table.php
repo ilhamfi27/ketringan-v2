@@ -38,10 +38,6 @@ class CreatePaymentsTable extends Migration
                   ->references('Id_Pesanan')
                   ->on('tb_pesanan')
                   ->onDelete('cascade');
-            $table->foreign('Denda')
-                  ->references('Id_Denda')
-                  ->on('tb_denda')
-                  ->onDelete('cascade');
 
             $table->timestamps();
         });

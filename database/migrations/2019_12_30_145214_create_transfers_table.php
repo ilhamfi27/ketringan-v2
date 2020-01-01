@@ -16,11 +16,19 @@ class CreateTransfersTable extends Migration
         Schema::create('tb_transfer', function (Blueprint $table) {
             $table->bigIncrements('Id_Transfer');
             $table->bigInteger('Id_Pembayaran')->unsigned();
-            $table->string('Nama_Pemegang_Rekening', 50);
-            $table->string('Nama_Bank_Pengirim', 20);
+            $table->string('Nama_Pemegang_Rekening', 50)
+                  ->nullable()
+                  ->default(null);
+            $table->string('Nama_Bank_Pengirim', 20)
+                  ->nullable()
+                  ->default(null);
             $table->enum('Status_Verifikasi', ['sudah','belum'])->default('belum');
-            $table->integer('Jumlah_Transfer');
-            $table->text('Keterangan')->default(null);
+            $table->integer('Jumlah_Transfer')
+                  ->nullable()
+                  ->default(null);
+            $table->text('Keterangan')
+                  ->nullable()
+                  ->default(null);
             $table->timestamp('Tgl_Transfer')
                   ->nullable()
                   ->default(null);
@@ -30,7 +38,9 @@ class CreateTransfersTable extends Migration
             $table->timestamp('Tgl_Dikonfirmasi')
                   ->nullable()
                   ->default(null);
-            $table->text('Bukti_Transfer')->default(null);
+            $table->text('Bukti_Transfer')
+                  ->nullable()
+                  ->default(null);
             $table->bigInteger('Id_Bank')->unsigned();
             $table->foreign('Id_Pembayaran')
                   ->references('Id_Pembayaran')

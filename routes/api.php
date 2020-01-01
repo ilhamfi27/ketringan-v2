@@ -53,6 +53,11 @@ Route::prefix('v1')->group(function (){
                 Route::delete('destroy/', 'api\v1\CartController@destroy');
             });
 
+            // routes for cart
+            Route::group(['prefix' => 'order'], function () {
+                Route::post('store/', 'api\v1\OrderController@store');
+            });
+
             // routes for konsumen
             Route::group(['prefix' => 'konsumen'], function () {
                 Route::post('request_membership/', 'api\v1\KonsumenController@membership_request');
