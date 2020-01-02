@@ -40,7 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function konsumen()
     {
-        return $this->hasOne('App\Konsumen');
+        return $this->hasOne('App\Customer');
     }
 
     public function socialized_accounts()

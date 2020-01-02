@@ -9,37 +9,11 @@ use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\Mail\RegistrationConfirmation;
 use App\User;
-use App\Konsumen;
+use App\Customer;
 use Validator;
 
 class UserController extends Controller
 {
-    /**
-     * @OA\Post(
-     *      path="/api/v1/login",
-     *      description="API for Login, the login will be generate token that must used by all pages that require authentication",
-     *      @OA\Parameter(
-     *          name="email",
-     *          in="query",
-     *          description="User's email",
-     *          required=true,
-     *      ),
-     *      @OA\Parameter(
-     *          name="password",
-     *          in="query",
-     *          description="User's password",
-     *          required=true,
-     *      ),
-     *      @OA\Response(
-     *          response="200", 
-     *          description="OK",
-     *      ),
-     *      @OA\Response(
-     *          response="401", 
-     *          description="Unauthorized"
-     *      )
-     * )
-     */
     public function login()
     {
         $user_data = [
@@ -61,51 +35,7 @@ class UserController extends Controller
             ], 401);
         }
     }
-
-    /**
-     * @OA\Post(
-     *      path="/api/v1/register",
-     *      description="API for Login, the login will be generate token that must used by all pages that require authentication",
-     *      @OA\Parameter(
-     *          name="nama",
-     *          in="query",
-     *          description="User's name",
-     *          required=true,
-     *      ),
-     *      @OA\Parameter(
-     *          name="email",
-     *          in="query",
-     *          description="User's email",
-     *          required=true,
-     *      ),
-     *      @OA\Parameter(
-     *          name="no_telefon",
-     *          in="query",
-     *          description="User's phone number",
-     *          required=true,
-     *      ),
-     *      @OA\Parameter(
-     *          name="password",
-     *          in="query",
-     *          description="Chosen password from user",
-     *          required=true,
-     *      ),
-     *      @OA\Parameter(
-     *          name="password_confirm",
-     *          in="query",
-     *          description="Password confirmation",
-     *          required=true,
-     *      ),
-     *      @OA\Response(
-     *          response="200", 
-     *          description="Request OK",
-     *      ),
-     *      @OA\Response(
-     *          response="401", 
-     *          description="Validation failed",
-     *      ),
-     * )
-     */
+    
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -146,7 +76,7 @@ class UserController extends Controller
         /**
          * insert data ke tabel tb_konsumen
          */
-        $konsumen = new Konsumen();
+        $konsumen = new Customer();
         $konsumen->Nama_Konsumen = $input['nama'];
         $konsumen->No_Telfon_Konsumen = $input['no_telefon'];
         $konsumen->Email_Konsumen = $input['email'];
@@ -186,27 +116,7 @@ class UserController extends Controller
 
         return response()->json($success, 200);
     }
-
-    /**
-     * @OA\Get(
-     *      path="/api/v1/token_confirmation/{id}",
-     *      description="Token confirmation after registering",
-     *      @OA\Parameter(
-     *          name="token",
-     *          in="query",
-     *          description="Users registration Token",
-     *          required=true,
-     *      ),
-     *      @OA\Response(
-     *          response="200", 
-     *          description="Request OK",
-     *      ),
-     *      @OA\Response(
-     *          response="401", 
-     *          description="Invalid verification token",
-     *      ),
-     * )
-     */
+    
     public function token_confirmation(Request $request)
     {
         $user = User::find($request->route('id'));
@@ -237,23 +147,6 @@ class UserController extends Controller
         ], 200);
     }
     
-    /**
-     * @OA\Get(
-     *      path="/api/v1/details",
-     *      description="Get user detail",
-     *      @OA\Response(
-     *          response="200", 
-     *          description="Request OK",
-     *      ),
-     *      @OA\Response(
-     *          response="401", 
-     *          description="Invalid verification token",
-     *      ),
-     *      security={
-     *          {"Bearer":{}}
-     *      }
-     * )
-     */
     public function details()
     {
         $user = Auth::user();

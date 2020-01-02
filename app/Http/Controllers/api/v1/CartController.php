@@ -81,7 +81,7 @@ class CartController extends Controller
         return response()->json([
             'success' => FALSE,
             'message' => 'Data Store Error!'
-        ], 500, $headers);
+        ], 500);
     }
 
     public function quantity_change(Request $request)
@@ -102,7 +102,7 @@ class CartController extends Controller
         return response()->json([
             'success' => FALSE,
             'message' => 'Data Update Error!'
-        ], 500, $headers);
+        ], 500);
     }
 
     public function destroy(Request $request)
@@ -121,6 +121,6 @@ class CartController extends Controller
         return response()->json([
             'success' => FALSE,
             'message' => 'Data Delete Error!'
-        ], 500, $headers);
+        ], 500);
     }
 }

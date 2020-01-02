@@ -4,47 +4,12 @@ namespace App\Http\Controllers\api\v1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Konsumen;
+use App\Customer;
 use App\MembershipRequest;
 use Illuminate\Support\Facades\Auth;
 
-class KonsumenController extends Controller
+class CustomerController extends Controller
 {
-    /**
-     * @OA\Post(
-     *      path="/api/v1/konsumen/request_membership",
-     *      description="Request membership for konsumen",
-     *      @OA\Parameter(
-     *          name="No_Telfon",
-     *          in="query",
-     *          description="User's phone number",
-     *          required=true,
-     *      ),
-     *      @OA\Parameter(
-     *          name="Alamat",
-     *          in="query",
-     *          description="User's address",
-     *          required=true,
-     *      ),
-     *      @OA\Parameter(
-     *          name="Catatan",
-     *          in="query",
-     *          description="User's note",
-     *          required=true,
-     *      ),
-     *      @OA\Response(
-     *          response="200", 
-     *          description="Request OK",
-     *      ),
-     *      @OA\Response(
-     *          response="401", 
-     *          description="Validation error",
-     *      ),
-     *      security={
-     *          {"Bearer":{}}
-     *      }
-     * )
-     */
     public function membership_request(Request $request)
     {
 
@@ -85,20 +50,10 @@ class KonsumenController extends Controller
             'error' => 'false',
         ], 200);
     }
-
-    /**
-     * @OA\Get(
-     *      path="/api/v1/konsumen/activated_membership",
-     *      description="Get activated membership for konsumen",
-     *      @OA\Response(
-     *          response="200", 
-     *          description="Request OK",
-     *      )
-     * )
-     */
+    
     public function get_activated_membership(Request $request)
     {
-        $activated_membership = Konsumen::where('Membership', 'VIP')->get();
+        $activated_membership = Customer::where('Membership', 'VIP')->get();
 
         return response()->json([
             'error' => 'false',
@@ -106,19 +61,6 @@ class KonsumenController extends Controller
         ], 200);
     }
 
-    /**
-     * @OA\Get(
-     *      path="/api/v1/konsumen/get_membership_request",
-     *      description="Get membership request",
-     *      @OA\Response(
-     *          response="200", 
-     *          description="Request OK",
-     *      ),
-     *      security={
-     *          {"Bearer":{}}
-     *      }
-     * )
-     */
     public function get_membership_request(Request $request)
     {
         $user = Auth::user();

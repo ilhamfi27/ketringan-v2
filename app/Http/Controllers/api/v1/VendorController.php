@@ -11,38 +11,6 @@ class VendorController extends Controller
 {
     public function partnership_request(Request $request)
     {
-        /**
-         * @OA\Post(
-         *      path="/api/v1/vendor/partnership_request",
-         *      description="Request partnership for vendor",
-         *      @OA\Parameter(
-         *          name="No_Telfon",
-         *          in="query",
-         *          description="User's phone number",
-         *          required=true,
-         *      ),
-         *      @OA\Parameter(
-         *          name="Alamat",
-         *          in="query",
-         *          description="User's address",
-         *          required=true,
-         *      ),
-         *      @OA\Parameter(
-         *          name="Catatan",
-         *          in="query",
-         *          description="User's note",
-         *          required=true,
-         *      ),
-         *      @OA\Response(
-         *          response="200", 
-         *          description="Request OK",
-         *      ),
-         *      @OA\Response(
-         *          response="401", 
-         *          description="Validation error",
-         *      )
-         * )
-         */
         $input = $request->all();
         $validator = Validator::make($request->all(), [
             'No_Telfon' => 'required|numeric',

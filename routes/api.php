@@ -33,7 +33,7 @@ Route::prefix('v1')->group(function (){
     });
 
     Route::group(['prefix' => 'konsumen'], function () {
-        Route::get('activated_membership/', 'api\v1\KonsumenController@get_activated_membership');
+        Route::get('activated_membership/', 'api\v1\CustomerController@get_activated_membership');
     });
     
     Route::get('token_confirmation/{id}', 'api\v1\UserController@token_confirmation');
@@ -56,12 +56,13 @@ Route::prefix('v1')->group(function (){
             // routes for cart
             Route::group(['prefix' => 'order'], function () {
                 Route::post('store/', 'api\v1\OrderController@store');
+                Route::get('detail/{code}', 'api\v1\OrderController@detail');
             });
 
             // routes for konsumen
             Route::group(['prefix' => 'konsumen'], function () {
-                Route::post('request_membership/', 'api\v1\KonsumenController@membership_request');
-                Route::get('get_membership_request/', 'api\v1\KonsumenController@get_membership_request');
+                Route::post('request_membership/', 'api\v1\CustomerController@membership_request');
+                Route::get('get_membership_request/', 'api\v1\CustomerController@get_membership_request');
             });
         });
     });
