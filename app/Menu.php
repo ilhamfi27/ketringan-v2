@@ -32,7 +32,7 @@ class Menu extends Model
 
     public function vendor()
     {
-        return $this->belongsTo('App\Vendor', 'Id_Menu_Paket', 'Id_Vendor');
+        return $this->belongsTo('App\Vendor', 'Id_Vendor');
     }
 
     public static function getMenu(

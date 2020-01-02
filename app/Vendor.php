@@ -38,6 +38,6 @@ class Vendor extends Model
 
     public function menu()
     {
-        return $this->hasMany('App\Menu', 'Id_Vendor', 'Id_Vendor');
+        return $this->hasMany('App\Menu', 'Id_Vendor');
     }
 }
