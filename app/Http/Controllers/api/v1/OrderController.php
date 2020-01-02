@@ -112,7 +112,9 @@ class OrderController extends Controller
             $paymentDetail = (object) [
                 'data_menu' => Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket']),
                 'syarat' => '#',
-                'link' => '#',
+                'link' => env('APP_URL') 
+                          . env('APP_PORT') 
+                          . '/api/v1/order/detail/'. $kodePesanan,
                 'data_bank' => Bank::find($checkout['Id_Bank']),
                 'nama' => $checkout['nama'],
                 'kode_pesanan' => $kodePesanan,

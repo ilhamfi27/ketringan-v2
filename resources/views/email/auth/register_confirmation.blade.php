@@ -671,7 +671,7 @@ float:right !important;
 																																										  class="full-width">
 																																											<tr>
 																																												<td valign="top" align="center" style="padding:10px">
-																																													<a href="{{ $url }}:8000/api/v1/token_confirmation/{{ $id }}?token={{ $token }}" target="_blank" style="text-decoration:none" class="edm_button">
+																																													<a href="{{ $url }}" target="_blank" style="text-decoration:none" class="edm_button">
 																																														<span style="font-family:Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:15px;color:#FFFFFF;line-height:27px;text-decoration:none">
 																																															<span class="mso-font-fix-arial">VERIFIKASI ALAMAT EMAIL</span>
 																																														</span>

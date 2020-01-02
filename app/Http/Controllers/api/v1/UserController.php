@@ -92,10 +92,11 @@ class UserController extends Controller
          * ke email user
          */
         $must_confirm = (object) [
-            'id' => $user->id,
-            'url' => env('APP_URL'),
             'nama' => $konsumen->Nama_Konsumen,
-            'token' => $generated_token,
+            'url' => env('APP_URL') 
+                    . env('APP_PORT') 
+                    . '/api/v1/token_confirmation/'. $user->id 
+                    . '?token=' . $generated_token,
         ];
         Mail::to($user)->send(new RegistrationConfirmation($must_confirm));
         

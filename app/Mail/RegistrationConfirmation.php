@@ -23,8 +23,6 @@ class RegistrationConfirmation extends Mailable
     public function __construct($user)
     {
         $this->nama = $user->nama;
-        $this->token = $user->token;
-        $this->id = $user->id;
         $this->url = $user->url;
     }
 
@@ -39,8 +37,6 @@ class RegistrationConfirmation extends Mailable
                     ->view('email.auth.register_confirmation')
                     ->with([
                         'nama' => $this->nama,
-                        'token' => $this->token,
-                        'id' => $this->id,
                         'url' => $this->url,
                     ]);
     }
