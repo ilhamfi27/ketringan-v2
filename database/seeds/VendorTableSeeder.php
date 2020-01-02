@@ -11,6 +11,7 @@ class VendorTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_vendor')->delete();
         $allData = [
             [1, 'RM Barokah Jaya Masakan Padang', 'Rumah Makan', '082378211387', '', 'rmbarokahjaya89@gmail.com', 'Sukapura', 'Rumah makan yang menyediakan masakan khas Padang d', '', 'Julianto', '1812061707890004', 1000, 10, 'aktif', 2, 2],
             [2, 'Rumah Makan Nasi "Ibu Yuyun"', 'Rumah Makan', '081221728840', NULL, 'asd@gmail.com', 'Gg. PGA RT04/RW02 Desa Lengkong Kec. Bojongsoang', 'Makanan Rumahan', '', 'Wina Yuningsih', '3204086203670001', 500, 20, 'aktif', 3, 1],

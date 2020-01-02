@@ -11,6 +11,7 @@ class MenuPaketTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_menu_paket')->delete();
         $allData = [
             [1, 'Nasi Rendang ala RM Barokah Jaya', NULL, 17000, 'Nasi disajikan dengan daging Rendang khas Padang yang lezat', 'event', 1, 0],
             [2, 'Nasi Ayam ala RM Barokah Jaya', NULL, 13000, 'Nasi disajikan dengan daging ayam serundeng khas Padang yang lezat', 'event', 1, 0],

@@ -12,6 +12,7 @@ class SubRegionTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_subregion')->delete();
         $allData = [
             [1, 'Sukabirus A', 'Dari bundaran sampai Bersih Berkah'],
             [2, 'Sukabirus B', 'Dari bersih berkah sampai Belokan KSD'],

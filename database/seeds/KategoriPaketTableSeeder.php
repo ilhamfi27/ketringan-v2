@@ -11,6 +11,7 @@ class KategoriPaketTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_kategori_paket')->delete();
         $allData = [
             [1, 'Paket Ayam dan Bebek', 'lama', 1, NULL],
             [2, 'Paket Ikan', 'lama', 1, NULL],

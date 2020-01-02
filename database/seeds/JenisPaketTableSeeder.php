@@ -12,6 +12,7 @@ class JenisPaketTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_jenis_paket')->delete();
         $allData = [
             [1, 'Paket'],
             [2, 'Ala Carte'],

@@ -12,6 +12,7 @@ class RegionTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_region')->delete();
         $allData = [
             [1, 'Sukabirus', 'Dari bundaran telkom sampai belokan KSD'],
             [2, 'Sukapura', 'Dari gerbang motor telkom sampai adiyaksa'],

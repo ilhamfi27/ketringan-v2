@@ -11,8 +11,13 @@ class BannerTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_banner')->delete();
         $allData = [
-            [1, 'Wallpaper', 'black-polygon-with-red-edges-abstract-hd-wallpaper-1920x1080.jpg', 'Enable'],
+            [1, 'Wallpaper', 'image.jpg', 'Enable'],
+            [2, 'Promosi Gratisan', 'image.jpg', 'Disable'],
+            [3, 'Promosi Ketringan', 'image.jpg', 'Enable'],
+            [4, 'Sarapan Bersama Ketringan', 'image.jpg', 'Enable'],
+            [5, 'Ketringan Romantic Dinner', 'image.jpg', 'Enable'],
         ];
         foreach ($allData as $data) {
             DB::table('tb_banner')->insert([

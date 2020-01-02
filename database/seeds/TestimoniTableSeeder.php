@@ -11,8 +11,35 @@ class TestimoniTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_testimoni')->delete();
         $allData = [
-            [1, 'Rafata Baharansyah', 'Ketua Himpunan Ketringan', 'user1.png', 'Makanan sangat enak, banyak dan bersih, sangat direkomendasikan untuk acara-acara di kampus.', '2019-09-11 11:15:47', 'enable'],
+            [
+                1,
+                'Rafata Baharansyah', 
+                'Ketua Himpunan Ketringan', 
+                'user1.png', 
+                'Makanan sangat enak, banyak dan bersih, sangat direkomendasikan untuk acara-acara di kampus.', 
+                '2019-09-11 11:15:47', 
+                'enable'
+            ],
+            [
+                2,
+                'Budogol Bin Asep', 
+                'Ketua Himpunan Matematika', 
+                'user2.png', 
+                'Makanan sangat enak, banyak dan bersih, sangat direkomendasikan untuk acara-acara di kampus.', 
+                '2019-09-11 11:15:48', 
+                'enable'
+            ],
+            [
+                3,
+                'Balalan Pasalan', 
+                'Ketua Himpunan Aljabar', 
+                'user3.png', 
+                'Makanan sangat enak, banyak dan bersih, sangat direkomendasikan untuk acara-acara di kampus.', 
+                '2019-09-11 11:15:49', 
+                'enable'
+            ],
         ];
         foreach ($allData as $data) {
             DB::table('tb_testimoni')->insert([

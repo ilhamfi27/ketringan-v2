@@ -11,6 +11,7 @@ class MultiValueRegionTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_mv_region')->delete();
         $allData = [
             [1, 1],
             [1, 2],

@@ -11,6 +11,7 @@ class MultivalueKategoriMenuTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('tb_mv_kategorimenu')->delete();
         $allData = [
             [34, 2],
             [36, 2],
