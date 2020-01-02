@@ -134,10 +134,36 @@ class OrderController extends Controller
             DB::rollback();
         
             return response()->json([
-                'success' => TRUE,
+                'success' => FALSE,
                 'message' => $e,
             ], 200);
         }
+    }
+
+    public function detail(Request $request)
+    {
+        $kodePesanan = $request->route('code');
+        $idKonsumen = $this->getKonsumenId();
+        $order = Order::where('Kode_Pesanan', $kodePesanan)
+                    ->first();
+
+        if($idKonsumen != $order->Id_Konsumen){
+            return response()->json([
+                'success' => FALSE,
+                'message' => "Unauthorized Access!",
+            ], 401);
+        }
+
+        $dataPesanan = Order::detail($order->Id_Pesanan);
+        $dataMenu = OrderedMenu::orderDetail($order->Id_Pesanan);
+        
+        return response()->json([
+            'success' => TRUE,
+            'data' => [
+                'pesanan' => $dataPesanan,
+                'menu' => $dataMenu,
+            ],
+        ], 200);
     }
 
     private function getKonsumenId()
