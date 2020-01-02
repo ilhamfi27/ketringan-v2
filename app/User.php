@@ -38,7 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function konsumen()
+    public function customer()
     {
         return $this->hasOne('App\Customer');
     }

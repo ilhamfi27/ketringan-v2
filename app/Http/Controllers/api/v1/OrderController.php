@@ -170,6 +170,6 @@ class OrderController extends Controller
     private function getKonsumenId()
     {
         $user = Auth::user();
-        return $user->konsumen()->first()->Id_Konsumen;
+        return $user->customer()->first()->Id_Konsumen;
     }
 }

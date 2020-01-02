@@ -29,7 +29,7 @@ class CustomerController extends Controller
             ], 401);
         }
 
-        $id_konsumen = $user->konsumen()->first()->Id_Konsumen;
+        $id_konsumen = $user->customer()->first()->Id_Konsumen;
 
         $membership_req = new MembershipRequest();
         $membership_req->Id_Konsumen        = $id_konsumen;
@@ -64,12 +64,23 @@ class CustomerController extends Controller
     public function get_membership_request(Request $request)
     {
         $user = Auth::user();
-        $id_konsumen = $user->konsumen()->first()->Id_Konsumen;
+        $id_konsumen = $user->customer()->first()->Id_Konsumen;
         $membership_request = MembershipRequest::where('Id_Konsumen', $id_konsumen)->get();
 
         return response()->json([
             'success' => TRUE,
             'data' => $membership_request,
+        ], 200);
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        $customerData = $user->konsumen->first();
+
+        return response()->json([
+            'success' => TRUE,
+            'data' => $customerData,
         ], 200);
     }
 }

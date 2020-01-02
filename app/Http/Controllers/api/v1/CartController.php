@@ -15,7 +15,7 @@ class CartController extends Controller
     public function all()
     {
         $user = Auth::user();
-        $id_konsumen = $user->konsumen()->first()->Id_Konsumen;
+        $id_konsumen = $user->customer()->first()->Id_Konsumen;
         $match_condition = ['id_konsumen' => $id_konsumen,];
         $cart_items = Cart::where($match_condition)->get();
         $items = [];
@@ -36,7 +36,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $user           = Auth::user();
-        $id_konsumen    = $user->konsumen()->first()->Id_Konsumen;
+        $id_konsumen    = $user->customer()->first()->Id_Konsumen;
         $quantities     = $request->quantity;
         $cart_data      = [];
 

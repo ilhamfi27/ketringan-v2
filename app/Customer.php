@@ -24,6 +24,10 @@ class Customer extends Model
         'Alamat_Konsumen', 'Foto_Profil_Konsumen', 'Membership', 'is_verifed', 'line_id'
     ];
 
+    protected $hidden = [
+        'Password',
+    ];
+
     /**
      * Relasi dengan user
      */
