@@ -128,15 +128,13 @@ class OrderController extends Controller
             Mail::to($user)->send(new MakePayment($paymentDetail));
         
             return response()->json([
-                'success' => TRUE,
-                'message' => 'Checkout Berhasil!',
+                'message' => 'Checkout Successful!',
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
         
             return response()->json([
-                'success' => FALSE,
-                'message' => $e,
+                'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
             ], 500);
         }
     }
@@ -150,16 +148,14 @@ class OrderController extends Controller
 
         if($idKonsumen != $order->Id_Konsumen){
             return response()->json([
-                'success' => FALSE,
-                'message' => "Unauthorized Access!",
-            ], 401);
+                'message' => "Forbidden!",
+            ], 403);
         }
 
         $dataPesanan = Order::detail($order->Id_Pesanan);
         $dataMenu = OrderedMenu::orderDetail($order->Id_Pesanan);
         
         return response()->json([
-            'success' => TRUE,
             'data' => [
                 'pesanan' => $dataPesanan,
                 'menu' => $dataMenu,

@@ -34,14 +34,12 @@ class PaymentController extends Controller
             DB::commit();
             
             return response()->json([
-                'success' => TRUE,
-                'message' => 'Bukti Pembayaran Berhasil Upload!',
-            ], 201);
+                'message' => 'Upload Successful!',
+            ], 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
-                'success' => FALSE,
-                'message' => $e,
+                'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
             ], 500);
         }
     }

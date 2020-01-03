@@ -8,40 +8,6 @@ use App\Menu;
 
 class MenuController extends Controller
 {
-    /**
-     * @OA\Get(
-     *      path="/api/v1/menu",
-     *      description="Get All Menu",
-     *      @OA\Parameter(
-     *          name="id_region",
-     *          in="query",
-     *          description="Get Menu Where Id Region is x",
-     *          required=false,
-     *      ),
-     *      @OA\Parameter(
-     *          name="id_kategori",
-     *          in="query",
-     *          description="Get Menu Where Id Kategori is x",
-     *          required=false,
-     *      ),
-     *      @OA\Parameter(
-     *          name="max_price",
-     *          in="query",
-     *          description="Get Menu Where Max Price is x",
-     *          required=false,
-     *      ),
-     *      @OA\Parameter(
-     *          name="min_price",
-     *          in="query",
-     *          description="Get Menu Where Min Price is x",
-     *          required=false,
-     *      ),
-     *      @OA\Response(
-     *          response="200", 
-     *          description="Request OK",
-     *      )
-     * )
-     */
     public function all(Request $request)
     {
         $id_region = $request->input('id_region') != null ? 
@@ -59,7 +25,6 @@ class MenuController extends Controller
         $menu = Menu::getMenu($id_region, $max_price, $min_price, $pagination_num);
         
         return response()->json([
-            'success' => TRUE,
             'data' => $menu
         ], 200);
     }

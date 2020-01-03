@@ -28,7 +28,6 @@ class CartController extends Controller
         }
 
         return response()->json([
-            'success' => TRUE,
             'data' => $cart_items,
         ], 200);
     }
@@ -55,7 +54,6 @@ class CartController extends Controller
                 $item->save();
             }
             return response()->json([
-                'success' => TRUE,
                 'message' => 'Data Updated!'
             ], 200);
         }
@@ -73,13 +71,11 @@ class CartController extends Controller
         $cart = new Cart;
         if ($cart->insert($cart_data)) {
             return response()->json([
-                'success' => TRUE,
                 'message' => 'Data Stored!'
             ], 200);
         }
 
         return response()->json([
-            'success' => FALSE,
             'message' => 'Data Store Error!'
         ], 500);
     }
@@ -94,13 +90,11 @@ class CartController extends Controller
         
         if ($cart->save()) {
             return response()->json([
-                'success' => TRUE,
                 'message' => 'Data Updated!'
             ], 200);
         }
 
         return response()->json([
-            'success' => FALSE,
             'message' => 'Data Update Error!'
         ], 500);
     }
@@ -113,13 +107,11 @@ class CartController extends Controller
         
         if ($cart->delete()) {
             return response()->json([
-                'success' => TRUE,
                 'message' => 'Data Deleted!'
             ], 200);
         }
 
         return response()->json([
-            'success' => FALSE,
             'message' => 'Data Delete Error!'
         ], 500);
     }

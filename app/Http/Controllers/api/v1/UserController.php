@@ -48,7 +48,6 @@ class UserController extends Controller
 
         if($validator->fails()){
             return response()->json([
-                'success' => FALSE,
                 'error' => $validator->errors()
             ], 400);
         }
@@ -101,7 +100,6 @@ class UserController extends Controller
         
         if (count(Mail::failures()) > 0) {
             return response()->json([
-                'success' => FALSE,
                 "error" => "Mail not successfully sent!",
             ], 500);
         }
@@ -124,7 +122,6 @@ class UserController extends Controller
 
         if(isset($user->email_verified_at)) {
             return response()->json([
-                'success' => FALSE,
                 'message' => 'Your email has been verified!',
             ], 200);
         }
@@ -136,13 +133,11 @@ class UserController extends Controller
 
         if ($user->verification_token != $token) {
             return response()->json([
-                'success' => FALSE,
                 'message' => 'Invalid verification token!',
             ], 401);
         }
 
         return response()->json([
-            'success' => TRUE,
             'message' => 'Verification success!',
         ], 200);
     }
@@ -151,7 +146,6 @@ class UserController extends Controller
     {
         $user = Auth::user();
         return response()->json([
-            'success' => TRUE,
             'user' => $user
         ], 200);
     }

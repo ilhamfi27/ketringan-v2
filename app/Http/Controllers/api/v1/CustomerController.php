@@ -26,7 +26,7 @@ class CustomerController extends Controller
         if($validator->fails()){
             return response()->json([
                 'error' => $validator->errors()
-            ], 401);
+            ], 400);
         }
 
         $id_konsumen = $user->customer()->first()->Id_Konsumen;
@@ -41,14 +41,13 @@ class CustomerController extends Controller
 
         if (!$data_saved) {
             return response()->json([
-                'error' => 'true',
                 'message' => 'Internal Server Error',
             ], 500);
         }
 
         return response()->json([
-            'error' => 'false',
-        ], 400);
+            'message' => 'Membership Created!',
+        ], 200);
     }
     
     public function get_activated_membership(Request $request)
@@ -56,7 +55,6 @@ class CustomerController extends Controller
         $activated_membership = Customer::where('Membership', 'VIP')->get();
 
         return response()->json([
-            'error' => 'false',
             'data' => $activated_membership,
         ], 200);
     }
@@ -68,7 +66,6 @@ class CustomerController extends Controller
         $membership_request = MembershipRequest::where('Id_Konsumen', $id_konsumen)->get();
 
         return response()->json([
-            'success' => TRUE,
             'data' => $membership_request,
         ], 200);
     }
@@ -79,7 +76,6 @@ class CustomerController extends Controller
         $customerData = $user->konsumen->first();
 
         return response()->json([
-            'success' => TRUE,
             'data' => $customerData,
         ], 200);
     }
