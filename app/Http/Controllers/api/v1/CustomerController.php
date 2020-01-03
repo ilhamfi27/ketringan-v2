@@ -48,7 +48,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'error' => 'false',
-        ], 200);
+        ], 400);
     }
     
     public function get_activated_membership(Request $request)

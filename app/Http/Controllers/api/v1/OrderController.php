@@ -137,7 +137,7 @@ class OrderController extends Controller
             return response()->json([
                 'success' => FALSE,
                 'message' => $e,
-            ], 200);
+            ], 500);
         }
     }
 
