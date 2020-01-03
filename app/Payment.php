@@ -25,4 +25,14 @@ class Payment extends Model
         'Sisa_Tagihan', 'Kode_Unik', 'Keterangan_Pembayaran', 
         'Id_Diskon', 'Potongan_Diskon',
     ];
+
+    public function order()
+    {
+        return $this->belongsTo('App\Order', 'Id_Pesanan');
+    }
+
+    public function transfer()
+    {
+        return $this->hasMany('App\Transfer', 'Id_Pembayaran');
+    }
 }

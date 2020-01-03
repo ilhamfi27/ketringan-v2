@@ -26,4 +26,9 @@ class Transfer extends Model
         'Tgl_Batas_Transfer', 'Tgl_Dikonfirmasi', 'Bukti_Transfer', 
         'Id_Bank', 
     ];
+
+    public function payment()
+    {
+        return $this->belongsTo('App\Payment', 'Id_Pembayaran');
+    }
 }

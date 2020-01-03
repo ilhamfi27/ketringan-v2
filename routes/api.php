@@ -65,6 +65,11 @@ Route::prefix('v1')->group(function (){
                 Route::get('get_membership_request/', 'api\v1\CustomerController@get_membership_request');
                 Route::get('profile/', 'api\v1\CustomerController@profile');
             });
+
+            // routes for payment
+            Route::group(['prefix' => 'payment'], function () {
+                Route::post('confirm/', 'api\v1\PaymentController@confirm');
+            });
         });
     });
 });

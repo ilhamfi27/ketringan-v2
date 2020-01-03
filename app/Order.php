@@ -29,7 +29,17 @@ class Order extends Model
 
     public function customer()
     {
-        $this->belongsTo('App\Customer', 'Id_Konsumen');
+        return $this->belongsTo('App\Customer', 'Id_Konsumen');
+    }
+
+    public function payment()
+    {
+        return $this->hasOne('App\Order', 'Id_Pesanan');
+    }
+
+    public function transfer()
+    {
+        return $this->hasOneThrough('App\Transfer', 'App\Payment', 'Id_Pesanan', 'Id_Pembayaran');
     }
 
     public static function detail($idPesanan)
