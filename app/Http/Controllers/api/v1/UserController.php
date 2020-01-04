@@ -23,14 +23,12 @@ class UserController extends Controller
 
         if(Auth::attempt($user_data)){
             $user = Auth::user();
-            $response['success'] = TRUE;
             $response['token'] = $user->createToken('userLogin')->accessToken;
             return response()->json(
                 $response
             , 200);
         } else {
             return response()->json([
-                'success' => FALSE,
                 'error' => 'Unauthorized'
             ], 401);
         }
@@ -69,7 +67,6 @@ class UserController extends Controller
         /**
          * token untuk login aplikasi
          */
-        $success['success'] = TRUE;
         $success['token'] = $user->createToken('userRegister')->accessToken;
 
         /**

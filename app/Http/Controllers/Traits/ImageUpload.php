@@ -4,12 +4,8 @@ namespace App\Http\Controllers\Traits;
 
 trait ImageUpload
 {
-
-    public function store($file, $folder)
+    public function storePaymentProof($file)
     {
-        $user = Auth::user();
-        $path = $file->storeAs(
-            'proof_of_payment', time() . '_' 
-        );
+        return $file->store('proof_of_payment');
     }
 }

@@ -4,12 +4,15 @@ namespace App\Http\Controllers\api\v1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\ImageUpload;
 use App\Order;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
+    use ImageUpload;
+
     public function confirm(Request $request)
     {
         DB::beginTransaction();
@@ -19,7 +22,7 @@ class PaymentController extends Controller
             $transfer = $order->transfer()->first();
 
             $buktiPembayaran = $request->bukti_pembayaran;
-            $buktiPembayaranUrl = $buktiPembayaran->store('proof_of_payment');
+            $buktiPembayaranUrl = $this->storePaymentProof($buktiPembayaran);
 
             $transfer->Nama_Pemegang_Rekening = $request->nama_pengirim;
             $transfer->Nama_Bank_Pengirim = $request->bank_pengirim;
