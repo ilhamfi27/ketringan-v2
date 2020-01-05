@@ -9,6 +9,7 @@ use App\Http\Controllers\Traits\ImageUpload;
 use App\MembershipRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
