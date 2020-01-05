@@ -64,6 +64,7 @@ Route::prefix('v1')->group(function (){
                 Route::post('request_membership/', 'api\v1\CustomerController@membership_request');
                 Route::get('get_membership_request/', 'api\v1\CustomerController@get_membership_request');
                 Route::get('profile/', 'api\v1\CustomerController@profile');
+                Route::post('profile_edit/', 'api\v1\CustomerController@profileEdit');
             });
 
             // routes for payment

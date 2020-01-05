@@ -5,11 +5,15 @@ namespace App\Http\Controllers\api\v1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Customer;
+use App\Http\Controllers\Traits\ImageUpload;
 use App\MembershipRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
+    use ImageUpload;
+    
     public function membership_request(Request $request)
     {
 
@@ -73,10 +77,53 @@ class CustomerController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $customerData = $user->konsumen->first();
+        $customerData = $user->customer()->first();
 
         return response()->json([
             'data' => $customerData,
         ], 200);
+    }
+
+    public function profileEdit(Request $request)
+    {
+        $user = Auth::user();
+        $customerData = $user->customer()->first();
+        $newData = $request->all();
+
+        $userAvatar = $request->Foto_Profil_Konsumen;
+        $avatarUrl = $this->userAvatarUpdate($userAvatar);
+
+        DB::beginTransaction();
+        try {
+            /**
+             * Update user credential
+             */
+            $user->update($request->all());
+
+            /**
+             * Update customer credential
+             */
+            $userAvatar = $request->Foto_Profil_Konsumen;
+            $avatarUrl = $this->userAvatarUpdate($userAvatar);
+
+            $newData['Foto_Profil_Konsumen'] = $avatarUrl;
+            $customerCredentials = [
+                'Email_Konsumen' => $request->email,
+                'Password' => $request->password,
+            ];
+            $customerData->update($newData + $customerCredentials);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Updated!',
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+        
+            return response()->json([
+                'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
+            ], 500);
+        }
     }
 }
