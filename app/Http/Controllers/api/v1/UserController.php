@@ -23,7 +23,9 @@ class UserController extends Controller
 
         if(Auth::attempt($user_data)){
             $user = Auth::user();
+            $namaKonsumen = $user->customer()->first()->Nama_Konsumen;
             $response['token'] = $user->createToken('userLogin')->accessToken;
+            $response['Nama_Konsumen'] = $namaKonsumen;
             return response()->json(
                 $response
             , 200);
