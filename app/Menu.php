@@ -27,7 +27,7 @@ class Menu extends Model
 
     public function cart()
     {
-        return $this->belongsTo('App\Cart');
+        return $this->hasOne('App\Cart');
     }
 
     public function vendor()

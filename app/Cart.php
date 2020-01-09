@@ -24,6 +24,6 @@ class Cart extends Model
 
     public function menu()
     {
-        return $this->hasOne('App\Menu', 'Id_Menu_Paket');
+        return $this->belongsTo('App\Menu', 'id_menu');
     }
 }
