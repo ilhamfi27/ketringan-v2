@@ -23,14 +23,14 @@ class UserController extends Controller
 
         if(Auth::attempt($user_data)){
             $user = Auth::user();
-            $response['success'] = TRUE;
+            $namaKonsumen = $user->customer()->first()->Nama_Konsumen;
             $response['token'] = $user->createToken('userLogin')->accessToken;
+            $response['Nama_Konsumen'] = $namaKonsumen;
             return response()->json(
                 $response
             , 200);
         } else {
             return response()->json([
-                'success' => FALSE,
                 'error' => 'Unauthorized'
             ], 401);
         }
@@ -48,9 +48,8 @@ class UserController extends Controller
 
         if($validator->fails()){
             return response()->json([
-                'success' => FALSE,
-                'errors' => $validator->errors()
-            ], 200);
+                'error' => $validator->errors()
+            ], 400);
         }
 
         $input = $request->all();
@@ -70,7 +69,6 @@ class UserController extends Controller
         /**
          * token untuk login aplikasi
          */
-        $success['success'] = TRUE;
         $success['token'] = $user->createToken('userRegister')->accessToken;
 
         /**
@@ -101,7 +99,6 @@ class UserController extends Controller
         
         if (count(Mail::failures()) > 0) {
             return response()->json([
-                'success' => FALSE,
                 "error" => "Mail not successfully sent!",
             ], 500);
         }
@@ -124,7 +121,6 @@ class UserController extends Controller
 
         if(isset($user->email_verified_at)) {
             return response()->json([
-                'success' => FALSE,
                 'message' => 'Your email has been verified!',
             ], 200);
         }
@@ -136,13 +132,11 @@ class UserController extends Controller
 
         if ($user->verification_token != $token) {
             return response()->json([
-                'success' => FALSE,
                 'message' => 'Invalid verification token!',
             ], 401);
         }
 
         return response()->json([
-            'success' => TRUE,
             'message' => 'Verification success!',
         ], 200);
     }
@@ -151,7 +145,6 @@ class UserController extends Controller
     {
         $user = Auth::user();
         return response()->json([
-            'success' => TRUE,
             'user' => $user
         ], 200);
     }

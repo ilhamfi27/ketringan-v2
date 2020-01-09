@@ -20,9 +20,8 @@ class VendorController extends Controller
 
         if($validator->fails()){
             return response()->json([
-                'success' => FALSE,
                 'error' => $validator->errors()
-            ], 401);
+            ], 400);
         }
 
         $parnership_req = new PartnershipRequest();

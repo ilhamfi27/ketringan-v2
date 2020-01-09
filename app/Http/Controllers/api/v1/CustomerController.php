@@ -5,11 +5,16 @@ namespace App\Http\Controllers\api\v1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Customer;
+use App\Http\Controllers\Traits\ImageUpload;
 use App\MembershipRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
+    use ImageUpload;
+    
     public function membership_request(Request $request)
     {
 
@@ -26,7 +31,7 @@ class CustomerController extends Controller
         if($validator->fails()){
             return response()->json([
                 'error' => $validator->errors()
-            ], 401);
+            ], 400);
         }
 
         $id_konsumen = $user->customer()->first()->Id_Konsumen;
@@ -41,13 +46,12 @@ class CustomerController extends Controller
 
         if (!$data_saved) {
             return response()->json([
-                'error' => 'true',
                 'message' => 'Internal Server Error',
             ], 500);
         }
 
         return response()->json([
-            'error' => 'false',
+            'message' => 'Membership Created!',
         ], 200);
     }
     
@@ -56,7 +60,6 @@ class CustomerController extends Controller
         $activated_membership = Customer::where('Membership', 'VIP')->get();
 
         return response()->json([
-            'error' => 'false',
             'data' => $activated_membership,
         ], 200);
     }
@@ -68,7 +71,6 @@ class CustomerController extends Controller
         $membership_request = MembershipRequest::where('Id_Konsumen', $id_konsumen)->get();
 
         return response()->json([
-            'success' => TRUE,
             'data' => $membership_request,
         ], 200);
     }
@@ -76,11 +78,53 @@ class CustomerController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $customerData = $user->konsumen->first();
+        $customerData = $user->customer()->first();
 
         return response()->json([
-            'success' => TRUE,
             'data' => $customerData,
         ], 200);
+    }
+
+    public function profileEdit(Request $request)
+    {
+        $user = Auth::user();
+        $customerData = $user->customer()->first();
+        $newData = $request->all();
+
+        $userAvatar = $request->Foto_Profil_Konsumen;
+        $avatarUrl = $this->userAvatarUpdate($userAvatar);
+
+        DB::beginTransaction();
+        try {
+            /**
+             * Update user credential
+             */
+            $user->update($request->all());
+
+            /**
+             * Update customer credential
+             */
+            $userAvatar = $request->Foto_Profil_Konsumen;
+            $avatarUrl = $this->userAvatarUpdate($userAvatar);
+
+            $newData['Foto_Profil_Konsumen'] = $avatarUrl;
+            $customerCredentials = [
+                'Email_Konsumen' => $request->email,
+                'Password' => Hash::make($request->password),
+            ];
+            $customerData->update($newData + $customerCredentials);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Updated!',
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+        
+            return response()->json([
+                'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
+            ], 500);
+        }
     }
 }

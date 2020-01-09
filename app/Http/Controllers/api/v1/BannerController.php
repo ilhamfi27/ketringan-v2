@@ -16,7 +16,6 @@ class BannerController extends Controller
                     $banner->where('Status', 'Disable')->get() : $banner->get();
 
         return response()->json([
-            'success' => TRUE,
             'data' => $banner
         ], 200);
     }
