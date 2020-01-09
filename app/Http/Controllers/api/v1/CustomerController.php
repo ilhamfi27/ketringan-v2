@@ -99,7 +99,8 @@ class CustomerController extends Controller
             /**
              * Update user credential
              */
-            $user->update($request->all());
+            $newData['password'] = Hash::make($request->password);
+            $user->update($newData);
 
             /**
              * Update customer credential
@@ -110,7 +111,7 @@ class CustomerController extends Controller
             $newData['Foto_Profil_Konsumen'] = $avatarUrl;
             $customerCredentials = [
                 'Email_Konsumen' => $request->email,
-                'Password' => Hash::make($request->password),
+                'Password' => $user->password,
             ];
             $customerData->update($newData + $customerCredentials);
 
