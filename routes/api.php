@@ -41,6 +41,10 @@ Route::prefix('v1')->group(function (){
     Route::group(['middleware' => 'auth:api'], function () {
         // authenticated account needed
         Route::post('details', 'api\v1\UserController@details');
+
+        Route::group(['prefix' => 'konsumen'], function () {
+            Route::get('profile/', 'api\v1\CustomerController@profile');
+        });
         
         // verified account needed
         Route::group(['middleware' => ['verified']], function () {
@@ -63,7 +67,6 @@ Route::prefix('v1')->group(function (){
             Route::group(['prefix' => 'konsumen'], function () {
                 Route::post('request_membership/', 'api\v1\CustomerController@membership_request');
                 Route::get('get_membership_request/', 'api\v1\CustomerController@get_membership_request');
-                Route::get('profile/', 'api\v1\CustomerController@profile');
                 Route::post('profile_edit/', 'api\v1\CustomerController@profileEdit');
             });
 
