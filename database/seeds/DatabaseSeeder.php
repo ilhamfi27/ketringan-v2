@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             MultivalueKategoriMenuTableSeeder::class,
             MultiValueRegionTableSeeder::class,
             BankTableSeeder::class,
+            DiscountTableSeeder::class,
         ]);
     }
 }

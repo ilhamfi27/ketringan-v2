@@ -40,4 +40,9 @@ class Customer extends Model
     {
         return $this->hasMany('App\Order', 'Id_Konsumen');
     }
+
+    public function payment()
+    {
+        return $this->hasManyThrough('App\Payment', 'App\Order', 'Id_Konsumen', 'Id_Pembayaran');
+    }
 }

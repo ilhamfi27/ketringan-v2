@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Payment extends Model
 {
@@ -34,5 +35,20 @@ class Payment extends Model
     public function transfer()
     {
         return $this->hasMany('App\Transfer', 'Id_Pembayaran');
+    }
+
+    public static function customerDiscount($customerId, $discountId)
+    {
+        return self::join('tb_pesanan', 'tb_pesanan.Id_pesanan', '=', 'tb_pembayaran.Id_pesanan')
+                ->where('Id_Konsumen', $customerId)
+                ->where('Id_Diskon', $discountId)
+                ->where('Status_Pesanan', '!=', 'dibatalkan')
+                ->select('*')
+                ->get();
+    }
+
+    public function scopeWithDiscount($query, $discountId)
+    {
+        return $query->where('Id_Diskon', $discountId);
     }
 }

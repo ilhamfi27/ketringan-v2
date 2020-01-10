@@ -74,6 +74,11 @@ Route::prefix('v1')->group(function (){
             Route::group(['prefix' => 'payment'], function () {
                 Route::post('confirm/', 'api\v1\PaymentController@confirm');
             });
+
+            // routes for discount
+            Route::group(['prefix' => 'discount'], function () {
+                Route::post('use_voucher/', 'api\v1\DiscountController@useVoucher');
+            });
         });
     });
 });
