@@ -23,7 +23,7 @@ class Discount extends Model
 
     public function scopeEnabled($query, $status = true)
     {
-        $statusDiskon = $status == true ? 'enabled' : 'disabled';
+        $statusDiskon = $status == true ? 'enable' : 'disable';
         return $query->where('Status_Diskon', $statusDiskon);
     }
 }
