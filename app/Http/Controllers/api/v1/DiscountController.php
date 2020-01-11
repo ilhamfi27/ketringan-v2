@@ -19,11 +19,18 @@ class DiscountController extends Controller
         $kodeDiskon = $request->kode_diskon;
         $currentPrice = $request->nominal;
 
-        $discount = Discount::getDiscount($kodeDiskon);
+        $discount = Discount::getByKodeDiskon($kodeDiskon)->first();
+        $discountEnabled = $discount->enabled()->first();
 
         if ($discount == null){
             return response()->json([
                 'message' => 'Kode Tidak Valid',
+            ], 401);
+        }
+
+        if ($discountEnabled == null){
+            return response()->json([
+                'message' => 'Voucher Tidak Aktif',
             ], 401);
         }
 

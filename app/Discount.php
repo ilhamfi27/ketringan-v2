@@ -16,10 +16,14 @@ class Discount extends Model
      */
     protected $primaryKey = 'Id_Diskon';
 
-    public static function getDiscount($kodeDiskon)
+    public function scopeGetByKodeDiskon($query, $kodeDiskon)
     {
-        return self::where('Kode_Diskon', $kodeDiskon)
-            ->where('Status_Diskon', 'enable')
-            ->first();
+        return $query->where('Kode_Diskon', $kodeDiskon);
+    }
+
+    public function scopeEnabled($query, $status = true)
+    {
+        $statusDiskon = $status == true ? 'enabled' : 'disabled';
+        return $query->where('Status_Diskon', $statusDiskon);
     }
 }
