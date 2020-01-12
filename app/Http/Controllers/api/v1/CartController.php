@@ -15,20 +15,26 @@ class CartController extends Controller
     public function all()
     {
         $user = Auth::user();
-        $id_konsumen = $user->customer()->first()->Id_Konsumen;
-        $match_condition = ['id_konsumen' => $id_konsumen,];
-        $cart_items = Cart::where($match_condition)->get();
+        $idKonsumen = $user->customer()->first()->Id_Konsumen;
+        $matchCondition = ['id_konsumen' => $idKonsumen,];
+        $cartItems = Cart::where($matchCondition)->get();
         $items = [];
 
-        foreach ($cart_items as $key => $value) {
+        foreach ($cartItems as $key => $value) {
             $menu = $value->menu()->first();
-            $minimal_pemesanan = $menu->vendor()->first()->Minimal_Pemesanan;
-            $detailMenu['Minimal_Pemesanan'] = $minimal_pemesanan;
-            $cart_items[$key]['menu'] = $detailMenu;
+            $vendor = $menu->vendor()->first();
+            $detailMenu = [
+                'Nama_Paket' => $menu->Nama_Paket,
+                'Gambar_Paket' => $menu->Gambar_Paket,
+                'Harga_Paket' => $menu->Harga_Paket,
+                'Minimal_Pemesanan' => $vendor->Minimal_Pemesanan,
+                'Nama_Vendor' => $vendor->Nama_Vendor,
+            ];
+            $cartItems[$key]['menu'] = $detailMenu;
         }
 
         return response()->json([
-            'data' => $cart_items,
+            'data' => $cartItems,
         ], 200);
     }
 
