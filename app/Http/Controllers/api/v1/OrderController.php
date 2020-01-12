@@ -129,6 +129,9 @@ class OrderController extends Controller
         
             return response()->json([
                 'message' => 'Checkout Successful!',
+                'data' => [
+                    'Kode_Pesanan' => $order->Kode_Pesanan,
+                ]
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
