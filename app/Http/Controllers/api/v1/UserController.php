@@ -82,8 +82,8 @@ class UserController extends Controller
         $konsumen->user_id = $user->id;
         $konsumen->save();
 
-        $success['nama_konsumen'] = $konsumen->Nama_Konsumen;
-        $success['email_konsumen'] = $user->email; // pakai email dari tabel users
+        $success['Nama_Konsumen'] = $konsumen->Nama_Konsumen;
+        $success['Email_Konsumen'] = $user->email; // pakai email dari tabel users
 
         /**
          * Mail sender untuk mengirimkan token konfirmasi
