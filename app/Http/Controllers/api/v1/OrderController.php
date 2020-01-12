@@ -15,6 +15,7 @@ use App\Transfer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Cart;
 
 class OrderController extends Controller
 {
@@ -104,7 +105,16 @@ class OrderController extends Controller
             $transfer = Transfer::create($checkout + $transferCompleteData);
             /**
              * End of transfer insertion section
+             * Start of destroy cart data
+             * 
+             * @param id_konsumen
+             * @param id_menu
              */
+            $cart = Cart::where('id_konsumen', $idKonsumen)
+                        ->whereIn('id_menu', $checkout['Id_Menu_Paket'])->get();
+            $cart->each(function ($cart, $key) {
+                $cart->delete();
+            });
 
             DB::commit();
             
