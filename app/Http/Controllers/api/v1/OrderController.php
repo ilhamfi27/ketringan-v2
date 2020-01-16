@@ -89,6 +89,8 @@ class OrderController extends Controller
                 'Total_Telah_Dibayar' => 0,
                 'Kode_Unik' => $uniqueCode,
             ];
+            $checkout['Id_Diskon'] = $checkout['Id_Diskon'] == "" || $checkout['Id_Diskon'] == null ? 
+                                        0 : $checkout['Id_Diskon'];
             $payment = Payment::create($checkout + $paymentCompleteData);
             $checkout['Id_Pembayaran'] = $payment->Id_Pembayaran;
             /**
@@ -132,6 +134,8 @@ class OrderController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
+
+            echo $e;
         
             return response()->json([
                 'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
