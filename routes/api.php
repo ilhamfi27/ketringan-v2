@@ -35,6 +35,10 @@ Route::prefix('v1')->group(function (){
     Route::group(['prefix' => 'konsumen'], function () {
         Route::get('activated_membership/', 'api\v1\CustomerController@get_activated_membership');
     });
+
+    Route::group(['prefix' => 'region'], function () {
+        Route::get('all/', 'api\v1\RegionController@all');
+    });
     
     Route::get('token_confirmation/{id}', 'api\v1\UserController@token_confirmation');
     

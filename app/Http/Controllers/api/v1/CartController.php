@@ -7,7 +7,7 @@ use App\Cart;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -15,69 +15,83 @@ class CartController extends Controller
     public function all()
     {
         $user = Auth::user();
-        $id_konsumen = $user->customer()->first()->Id_Konsumen;
-        $match_condition = ['id_konsumen' => $id_konsumen,];
-        $cart_items = Cart::where($match_condition)->get();
+        $idKonsumen = $user->customer()->first()->Id_Konsumen;
+        $matchCondition = ['id_konsumen' => $idKonsumen,];
+        $cartItems = Cart::where($matchCondition)->get();
         $items = [];
 
-        foreach ($cart_items as $key => $value) {
+        foreach ($cartItems as $key => $value) {
             $menu = $value->menu()->first();
-            $minimal_pemesanan = $menu->vendor()->first()->Minimal_Pemesanan;
-            $detailMenu['Minimal_Pemesanan'] = $minimal_pemesanan;
-            $cart_items[$key]['menu'] = $detailMenu;
+            $vendor = $menu->vendor()->first();
+            $detailMenu = [
+                'Nama_Paket' => $menu->Nama_Paket,
+                'Gambar_Paket' => $menu->Gambar_Paket,
+                'Harga_Paket' => $menu->Harga_Paket,
+                'Minimal_Pemesanan' => $vendor->Minimal_Pemesanan,
+                'Nama_Vendor' => $vendor->Nama_Vendor,
+            ];
+            $cartItems[$key]['menu'] = $detailMenu;
         }
 
         return response()->json([
-            'data' => $cart_items,
+            'data' => $cartItems,
         ], 200);
     }
-
+    
     public function store(Request $request)
     {
         $user           = Auth::user();
-        $id_konsumen    = $user->customer()->first()->Id_Konsumen;
+        $idKonsumen     = $user->customer()->first()->Id_Konsumen;
         $quantities     = $request->quantity;
-        $cart_data      = [];
+        $menuIds        = $request->id_menu;
+        $cartData       = [];
+        $customerCart   = Cart::where('id_konsumen', $idKonsumen);
 
         /**
          * check menu on cart by customer id
          * if exists, the correspond item quantity will plus by 1
          */
-        $cart_item = Cart::where('id_konsumen', $id_konsumen)
-                        ->whereIn('id_menu', $request->id_menu);
-        $cart_item_exist = $cart_item->count() > 0 ? TRUE : FALSE;
-
-        if ($cart_item_exist){
-            $items = $cart_item->get();
-            foreach ($items as $item) {
-                $item->quantity += 1;
-                $item->save();
+        $existingCartItem = $customerCart
+                            ->whereIn('id_menu', $menuIds)->get();
+        $cartItemMenuId = $existingCartItem->pluck('id_menu')->toArray();
+        
+        DB::beginTransaction();
+        try {
+            foreach ($menuIds as $idx => $id) {
+                if (in_array($id, $cartItemMenuId)) {
+                    $cartItem = $this->getCartItem($idKonsumen, $id);
+                    $cartItem->quantity += 1;
+                    $cartItem->save();
+                } else {
+                    Cart::create([
+                        'id_konsumen'   => $idKonsumen,
+                        'id_menu'       => $id,
+                        'quantity'      => $quantities[$idx],
+                        'created_at'    => Carbon::now(),
+                        'updated_at'    => Carbon::now(),
+                    ]);
+                }
             }
+            
+            DB::commit();
+
             return response()->json([
-                'message' => 'Data Updated!'
+                'message' => 'Data Disimpan!'
             ], 200);
-        }
-
-        foreach ($request->id_menu as $idx => $id) {
-            array_push($cart_data, [
-                'id_konsumen'   => $id_konsumen,
-                'id_menu'       => $id,
-                'quantity'      => $quantities[$idx],
-                'created_at'    => Carbon::now(),
-                'updated_at'    => Carbon::now(),
-            ]);
-        }
-
-        $cart = new Cart;
-        if ($cart->insert($cart_data)) {
+        } catch (\Exception $e) {
+            DB::rollback();
+            
             return response()->json([
-                'message' => 'Data Stored!'
-            ], 200);
+                'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
+            ], 500);
         }
 
-        return response()->json([
-            'message' => 'Data Store Error!'
-        ], 500);
+    }
+
+    private function getCartItem($customerId, $menuid)
+    {
+        $customerCart = Cart::where('id_konsumen', $customerId);
+        return $customerCart->where('id_menu', $menuid)->first();
     }
 
     public function quantity_change(Request $request)

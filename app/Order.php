@@ -48,9 +48,10 @@ class Order extends Model
                 ->join('tb_pembayaran', 'tb_pesanan.Id_Pesanan', '=', 'tb_pembayaran.Id_Pesanan')
                 ->join('tb_transfer', 'tb_pembayaran.Id_Pembayaran', '=', 'tb_transfer.Id_Pembayaran')
                 ->join('tb_konsumen', 'tb_pesanan.Id_Konsumen', '=', 'tb_konsumen.Id_Konsumen')
+                ->join('tb_bank', 'tb_bank.Id_Bank', '=', 'tb_transfer.Id_Bank')
                 ->select('tb_pesanan.*', 'tb_pembayaran.*', 
                             'tb_transfer.*', 'tb_konsumen.Nama_Konsumen', 
-                            'tb_konsumen.Email_Konsumen')
+                            'tb_konsumen.Email_Konsumen', 'tb_bank.*')
                 ->where('tb_pesanan.Id_Pesanan', '=', $idPesanan)
                 ->first();
     }
