@@ -134,8 +134,6 @@ class OrderController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
-
-            echo $e;
         
             return response()->json([
                 'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
