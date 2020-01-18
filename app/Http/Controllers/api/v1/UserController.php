@@ -176,11 +176,12 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
+            $newPassword = Hash::make($request->password);
             /**
              * Update customer credential
              */
             $customerCredentials = [
-                'Password' => $request->password,
+                'Password' => $newPassword,
             ];
             $customerData->update($customerCredentials);
 
@@ -188,7 +189,7 @@ class UserController extends Controller
              * Update customer credential
              */
             $user->update([
-                'password' => Hash::make($request->password),
+                'password' => $newPassword,
             ]);
 
             DB::commit();
