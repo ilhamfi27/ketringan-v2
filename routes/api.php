@@ -26,6 +26,7 @@ Route::prefix('v1')->group(function (){
 
     Route::group(['prefix' => 'menu'], function () {
         Route::get('/', 'api\v1\MenuController@all');
+        Route::get('categories/', 'api\v1\MenuController@getKategoriByJenis');
     });
 
     Route::group(['prefix' => 'vendor'], function () {
