@@ -12,6 +12,9 @@ class MenuController extends Controller
 {
     public function all(Request $request)
     {
+        $idJenisMenu = $request->input('id_jenis_menu') != null ? 
+                    $request->input('id_jenis_menu') : null;
+
         $idKategori = $request->input('id_kategori') != null ? 
                     $request->input('id_kategori') : null;
 
@@ -27,8 +30,8 @@ class MenuController extends Controller
         $paginationNum = $request->input('pagination_num') != null ? 
                     $request->input('pagination_num') : null;
 
-        $menu = Menu::getMenu($idKategori, $idRegion, $maxPrice, $minPrice, 
-                                    $paginationNum);
+        $menu = Menu::getMenu($idJenisMenu, $idKategori, $idRegion, $maxPrice, 
+                            $minPrice, $paginationNum);
         
         return response()->json([
             'data' => $menu

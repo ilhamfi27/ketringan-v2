@@ -36,8 +36,8 @@ class Menu extends Model
     }
 
     public static function getMenu(
-        $idKategori = null, $region = null, $max_price = null, $min_price = null
-        , $pagination_num = 15)
+        $idJenisMenu = null, $idKategori = null, $region = null, $max_price = null
+        , $min_price = null, $pagination_num = 15)
     {
         $menu = DB::table('tb_menu_paket')
             ->join('tb_vendor', 'tb_vendor.Id_Vendor', '=', 'tb_menu_paket.Id_Vendor')
@@ -49,6 +49,10 @@ class Menu extends Model
             ->join('tb_jenis_paket', 'tb_jenis_paket.Id_Jenis_Menu', '=', 'tb_kategori_paket.Id_Jenis_Menu')
             ->select('tb_menu_paket.*', 'tb_region.Region', 'tb_subregion.Subregion', 
                         'tb_vendor.*')->distinct();
+
+        if ($idJenisMenu != null) {
+            $menu->where('tb_jenis_paket.Id_Jenis_Menu', $idJenisMenu);
+        }
 
         if ($idKategori != null) {
             $menu->whereIn('tb_kategori_paket.Id_Kategori_Menu', $idKategori);
