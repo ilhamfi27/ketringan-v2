@@ -15,20 +15,20 @@ class MenuController extends Controller
         $idKategori = $request->input('id_kategori') != null ? 
                     $request->input('id_kategori') : null;
 
-        $id_region = $request->input('id_region') != null ? 
+        $idRegion = $request->input('id_region') != null ? 
                     $request->input('id_region') : null;
 
-        $max_price = $request->input('max_price') != null ? 
+        $maxPrice = $request->input('max_price') != null ? 
                     $request->input('max_price') : null;
 
-        $min_price = $request->input('min_price') != null ? 
+        $minPrice = $request->input('min_price') != null ? 
                     $request->input('min_price') : null;
 
-        $pagination_num = $request->input('pagination_num') != null ? 
+        $paginationNum = $request->input('pagination_num') != null ? 
                     $request->input('pagination_num') : null;
 
-        $menu = Menu::getMenu($idKategori, $id_region, $max_price, $min_price, 
-                                    $pagination_num);
+        $menu = Menu::getMenu($idKategori, $idRegion, $maxPrice, $minPrice, 
+                                    $paginationNum);
         
         return response()->json([
             'data' => $menu
