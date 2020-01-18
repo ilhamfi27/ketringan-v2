@@ -105,11 +105,8 @@ class CustomerController extends Controller
             if ($avatarUrl == null) {
                 unset($newData['Foto_Profil_Konsumen']);
             }
-
-            $customerCredentials = [
-                'Email_Konsumen' => $request->email,
-            ];
-            $customerData->update($newData + $customerCredentials);
+            
+            $customerData->update($newData);
 
             DB::commit();
 
