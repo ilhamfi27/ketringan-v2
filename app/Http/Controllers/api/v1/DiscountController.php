@@ -62,6 +62,7 @@ class DiscountController extends Controller
         }
         
         $data['diskon'] = [
+            'Id_Diskon' => $discount->Id_Diskon,
             'Kode_Diskon' => $discount->Kode_Diskon,
             'Minimal_Pembelian' => $discount->Minimal_Pembelian,
             'Jenis_Diskon' => $discount->Jenis_Diskon,
