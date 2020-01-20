@@ -91,29 +91,22 @@ class CustomerController extends Controller
         $customerData = $user->customer()->first();
         $newData = $request->all();
 
-        $userAvatar = $request->Foto_Profil_Konsumen;
-        $avatarUrl = $this->userAvatarUpdate($userAvatar);
-
         DB::beginTransaction();
         try {
-            /**
-             * Update user credential
-             */
-            $newData['password'] = Hash::make($request->password);
-            $user->update($newData);
-
             /**
              * Update customer credential
              */
             $userAvatar = $request->Foto_Profil_Konsumen;
-            $avatarUrl = $this->userAvatarUpdate($userAvatar);
+            $avatarUrl = $request->Foto_Profil_Konsumen != null ?
+                             $this->userAvatarUpdate($userAvatar) : null;
 
             $newData['Foto_Profil_Konsumen'] = $avatarUrl;
-            $customerCredentials = [
-                'Email_Konsumen' => $request->email,
-                'Password' => $user->password,
-            ];
-            $customerData->update($newData + $customerCredentials);
+
+            if ($avatarUrl == null) {
+                unset($newData['Foto_Profil_Konsumen']);
+            }
+            
+            $customerData->update($newData);
 
             DB::commit();
 

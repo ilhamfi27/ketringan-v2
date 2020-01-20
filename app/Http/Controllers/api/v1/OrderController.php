@@ -90,6 +90,8 @@ class OrderController extends Controller
                 'Total_Telah_Dibayar' => 0,
                 'Kode_Unik' => $uniqueCode,
             ];
+            $checkout['Id_Diskon'] = $checkout['Id_Diskon'] == "" || $checkout['Id_Diskon'] == null ? 
+                                        0 : $checkout['Id_Diskon'];
             $payment = Payment::create($checkout + $paymentCompleteData);
             $checkout['Id_Pembayaran'] = $payment->Id_Pembayaran;
             /**

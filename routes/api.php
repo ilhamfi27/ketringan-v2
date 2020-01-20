@@ -26,6 +26,7 @@ Route::prefix('v1')->group(function (){
 
     Route::group(['prefix' => 'menu'], function () {
         Route::get('/', 'api\v1\MenuController@all');
+        Route::get('categories/', 'api\v1\MenuController@getKategoriByJenis');
     });
 
     Route::group(['prefix' => 'vendor'], function () {
@@ -45,6 +46,10 @@ Route::prefix('v1')->group(function (){
     Route::group(['middleware' => 'auth:api'], function () {
         // authenticated account needed
         Route::post('details', 'api\v1\UserController@details');
+        
+        Route::group(['prefix' => 'user'], function () {
+            Route::post('update', 'api\v1\UserController@updateCredentials');
+        });
 
         Route::group(['prefix' => 'konsumen'], function () {
             Route::get('profile/', 'api\v1\CustomerController@profile');

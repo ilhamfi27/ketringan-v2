@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use App\Mail\RegistrationConfirmation;
 use App\User;
 use App\Customer;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Validator;
 
 class UserController extends Controller
@@ -147,5 +149,60 @@ class UserController extends Controller
         return response()->json([
             'user' => $user
         ], 200);
+    }
+
+    public function updateCredentials(Request $request)
+    {
+        $user = Auth::user();
+        $customerData = $user->customer()->first();
+
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'error' => $validator->errors()
+            ], 400);
+        }
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'error' => 'Password Lama Salah'
+            ], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            $newPassword = Hash::make($request->password);
+            /**
+             * Update customer credential
+             */
+            $customerCredentials = [
+                'Password' => $newPassword,
+            ];
+            $customerData->update($customerCredentials);
+
+            /**
+             * Update customer credential
+             */
+            $user->update([
+                'password' => $newPassword,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Updated!',
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+        
+            return response()->json([
+                'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
+            ], 500);
+        }
     }
 }
