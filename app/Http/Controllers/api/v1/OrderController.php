@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Cart;
+use App\Discount;
 
 class OrderController extends Controller
 {
@@ -80,18 +81,20 @@ class OrderController extends Controller
              * Start of payment
              * 
              * @param Metode_Pembayaran
-             * @param Id_Diskon
+             * @param Kode_Diskon
              * @param Potongan_Diskon
              */
+
+            $discount = Discount::where('Kode_Diskon', $checkout['Kode_Diskon'])->first();
             $paymentCompleteData = [
                 'Tagihan' => $checkout['Total_Harga'],
                 'Total_Tagihan' => $checkout['Total_Harga'],
                 'Sisa_Tagihan' => $checkout['Total_Harga'],
                 'Total_Telah_Dibayar' => 0,
                 'Kode_Unik' => $uniqueCode,
+                'Id_Diskon' => $discount == null ? 0 : $discount->Id_Diskon,
             ];
-            $checkout['Id_Diskon'] = $checkout['Id_Diskon'] == "" || $checkout['Id_Diskon'] == null ? 
-                                        0 : $checkout['Id_Diskon'];
+
             $payment = Payment::create($checkout + $paymentCompleteData);
             $checkout['Id_Pembayaran'] = $payment->Id_Pembayaran;
             /**
@@ -147,7 +150,9 @@ class OrderController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
-        
+            
+            echo $e;
+
             return response()->json([
                 'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
             ], 500);
