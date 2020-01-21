@@ -12,29 +12,33 @@ class MenuController extends Controller
 {
     public function all(Request $request)
     {
-        $idJenisMenu = $request->input('id_jenis_menu') != null ? 
-                    $request->input('id_jenis_menu') : null;
+        $idJenisMenu = $request->id_jenis_menu != null ? 
+                    $request->id_jenis_menu : null;
 
-        $idKategori = $request->input('id_kategori') != null ? 
-                    $request->input('id_kategori') : null;
+        $idKategori = $request->id_kategori != null ? 
+                    $request->id_kategori : null;
 
-        $idRegion = $request->input('id_region') != null ? 
-                    $request->input('id_region') : null;
+        $idRegion = $request->id_region != null ? 
+                    $request->id_region : null;
 
-        $maxPrice = $request->input('max_price') != null ? 
-                    $request->input('max_price') : null;
+        $maxPrice = $request->max_price != null ? 
+                    $request->max_price : null;
 
-        $minPrice = $request->input('min_price') != null ? 
-                    $request->input('min_price') : null;
+        $minPrice = $request->min_price != null ? 
+                    $request->min_price : null;
 
-        $paginationNum = $request->input('pagination_num') != null ? 
-                    $request->input('pagination_num') : null;
+        $paginationNum = $request->pagination_num != null ? 
+                    $request->pagination_num : null;
 
         $menu = Menu::getMenu($idJenisMenu, $idKategori, $idRegion, $maxPrice, 
                             $minPrice, $paginationNum);
+
+        $kategori = MenuCategory::where('Id_Jenis_Menu', $request->id_jenis_menu)
+                        ->get();
         
         return response()->json([
-            'data' => $menu
+            'kategori' => $kategori,
+            'data' => $menu,
         ], 200);
     }
 
