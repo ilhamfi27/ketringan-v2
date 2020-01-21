@@ -44,11 +44,11 @@ class MenuController extends Controller
 
     public function getKategoriByJenis(Request $request)
     {
-        $menuCategories = MenuCategory::where('Id_Jenis_Menu', $request->id_jenis_menu)
-                            ->get();
+        $menuCategory = MenuCategory::where('Id_Jenis_Menu', $request->id_jenis_menu)
+                            ->first();
 
         return response()->json([
-            'data' => $menuCategories
+            'data' => $menuCategory
         ], 200);
     }
 }
