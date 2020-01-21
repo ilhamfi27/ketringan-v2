@@ -161,16 +161,20 @@ class UserController extends Controller
             'password' => 'required',
             'password_confirmation' => 'required|same:password'
         ]);
+        
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'error' => [
+                    'old_password' => [
+                        'Password Lama Salah'
+                    ]
+                ],
+            ], 400);
+        }
 
         if($validator->fails()){
             return response()->json([
                 'error' => $validator->errors()
-            ], 400);
-        }
-
-        if (!Hash::check($request->old_password, $user->password)) {
-            return response()->json([
-                'error' => 'Password Lama Salah'
             ], 400);
         }
 
