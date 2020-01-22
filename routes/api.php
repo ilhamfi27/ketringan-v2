@@ -88,6 +88,10 @@ Route::prefix('v1')->group(function (){
             Route::group(['prefix' => 'discount'], function () {
                 Route::post('use_voucher/', 'api\v1\DiscountController@useVoucher');
             });
+
+            Route::group(['prefix' => 'menu'], function () {
+                Route::post('suggest_order/', 'api\v1\MenuController@suggestOrder');
+            });
         });
     });
 });
