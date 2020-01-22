@@ -10,6 +10,7 @@ use App\MembershipRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -20,7 +21,6 @@ class CustomerController extends Controller
 
         $user = Auth::user();
         $input = $request->all();
-
 
         $validator = Validator::make($request->all(), [
             'No_Telfon' => 'required|numeric',
