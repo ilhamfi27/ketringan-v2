@@ -77,6 +77,7 @@ Route::prefix('v1')->group(function (){
                 Route::post('request_membership/', 'api\v1\CustomerController@membership_request');
                 Route::get('get_membership_request/', 'api\v1\CustomerController@get_membership_request');
                 Route::post('profile_edit/', 'api\v1\CustomerController@profileEdit');
+                Route::get('order_list/', 'api\v1\CustomerController@orderList');
             });
 
             // routes for payment
@@ -87,6 +88,10 @@ Route::prefix('v1')->group(function (){
             // routes for discount
             Route::group(['prefix' => 'discount'], function () {
                 Route::post('use_voucher/', 'api\v1\DiscountController@useVoucher');
+            });
+
+            Route::group(['prefix' => 'menu'], function () {
+                Route::post('suggest_order/', 'api\v1\MenuController@suggestOrder');
             });
         });
     });

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Menu;
 use App\MenuCategory;
 use App\MenuType;
+use App\QuickOrder;
+use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
 {
@@ -49,6 +51,33 @@ class MenuController extends Controller
 
         return response()->json([
             'data' => $menuCategory
+        ], 200);
+    }
+
+    public function suggestOrder(Request $request)
+    {
+        $user = Auth::user();
+        $customerId =  $user->customer()->first()->Id_Konsumen;
+        $newData = $request->all();
+
+        $validator = Validator::make($request->all(), [
+            'No_Telf_Aktif' => 'required|numeric',
+            'Catatan_Pemesanan' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'error' => $validator->errors()
+            ], 400);
+        }
+
+        $completeData = [
+            'Id_Konsumen' => $customerId,
+        ];
+        QuickOrder::create($newData + $completeData);
+
+        return response()->json([
+            'message' => 'Saran Berhasil Dikirim!',
         ], 200);
     }
 }
