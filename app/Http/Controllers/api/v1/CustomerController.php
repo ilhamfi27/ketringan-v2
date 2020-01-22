@@ -140,7 +140,12 @@ class CustomerController extends Controller
     {
         $user = Auth::user();
         $customer = $user->customer()->first();
-        $orders = $customer->orders()->get();
+        $orders = $customer->orders()->get()->toArray();
+
+        foreach ($orders as $key => $value) {
+            $orders[$key]['Status_Pesanan'] = ucwords(
+                str_replace("_", " ", $orders[$key]['Status_Pesanan']));
+        }
 
         return response()->json([
             'data' => $orders,
