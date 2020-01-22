@@ -121,4 +121,15 @@ class CustomerController extends Controller
             ], 500);
         }
     }
+
+    public function orderList()
+    {
+        $user = Auth::user();
+        $customer = $user->customer()->first();
+        $orders = $customer->orders()->get();
+
+        return response()->json([
+            'data' => $orders,
+        ], 200);
+    }
 }
