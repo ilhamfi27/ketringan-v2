@@ -80,7 +80,10 @@ class DiscountController extends Controller
 
     public function allVoucher()
     {
-        $vouchers = Discount::enabled()->get();
+        $vouchers = Discount::enabled()->get()->toArray();
+        foreach ($vouchers as $key => $voucher) {
+            $vouchers[$key]['Ketentuan'] = array_filter(explode(";", $vouchers[$key]['Ketentuan']));
+        }
 
         return response()->json([
             'data' => $vouchers,
