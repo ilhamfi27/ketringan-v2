@@ -74,4 +74,13 @@ class DiscountController extends Controller
             'data' => $data,
         ], 200);
     }
+
+    public function allVoucher()
+    {
+        $vouchers = Discount::enabled()->get();
+
+        return response()->json([
+            'data' => $vouchers,
+        ], 200);
+    }
 }

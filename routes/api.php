@@ -16,6 +16,10 @@ Route::prefix('v1')->group(function (){
     Route::post('login', 'api\v1\UserController@login');
     Route::post('register', 'api\v1\UserController@register');
 
+    Route::group(['prefix' => 'home'], function () {
+        Route::get('main_screen/', 'api\v1\HomeController@mainScreen');
+    });
+
     Route::group(['prefix' => 'banner'], function () {
         Route::get('active_banner/', 'api\v1\BannerController@active_banner');
     });
@@ -39,6 +43,11 @@ Route::prefix('v1')->group(function (){
 
     Route::group(['prefix' => 'region'], function () {
         Route::get('all/', 'api\v1\RegionController@all');
+    });
+
+    // routes for discount
+    Route::group(['prefix' => 'discount'], function () {
+        Route::get('all_voucher/', 'api\v1\DiscountController@allVoucher');
     });
     
     Route::get('token_confirmation/{id}', 'api\v1\UserController@token_confirmation');
