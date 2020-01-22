@@ -20,7 +20,10 @@ class DiscountController extends Controller
         $currentPrice = $request->nominal;
 
         $discount = Discount::getByKodeDiskon($kodeDiskon)->first();
-        $discountEnabled = $discount->enabled()->first();
+        
+        if ($discount != null) {
+            $discountEnabled = $discount->enabled()->first();
+        }
 
         if ($discount == null){
             return response()->json([
