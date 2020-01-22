@@ -9,6 +9,7 @@ use App\MenuCategory;
 use App\MenuType;
 use App\QuickOrder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class MenuController extends Controller
 {
