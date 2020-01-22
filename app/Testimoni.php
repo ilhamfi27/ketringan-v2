@@ -22,4 +22,9 @@ class Testimoni extends Model
     protected $fillable = [
         'Nama_Pemtestimoni', 'Jabatan', 'Foto_Pemtestimoni', 'Isi_Testimoni', 'Tgl_Testimoni', 'Status_Testimoni'
     ];
+
+    public function scopeEnabled($query)
+    {
+        return $query->where('Status_Testimoni', 'enable');
+    }
 }
