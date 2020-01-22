@@ -26,6 +26,28 @@ class OrderController extends Controller
         $checkout = $request->all();
         $checkout['Total_Harga'] = Menu::sumPrices($checkout['Id_Menu_Paket'], 
                         $checkout['Jumlah_Pemesanan']) - $uniqueCode;
+        
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required|regex:/^[a-zA-Z ]*$/',
+            'Alamat_Pengiriman' => 'required',
+            'No_Telfon_Aktif' => 'required|numeric',
+            'No_Telfon_Alternatif' => 'numeric|different:No_Telefon_Aktif',
+            'Tanggal_Kegiatan' => 'required',
+            'Waktu_Kegiatan' => 'required',
+            'Id_Menu_Paket' => 'required',
+            'Catatan' => 'required',
+            'Jumlah_Pemesanan' => 'required|numeric',
+            'Metode_Pembayaran' => 'required',
+            'Kode_Diskon' => 'required',
+            'Potongan_Diskon' => 'required|numeric',
+            'Id_Bank' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'error' => $validator->errors()
+            ], 400);
+        }
 
         DB::beginTransaction();
         try {

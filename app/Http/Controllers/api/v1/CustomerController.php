@@ -90,6 +90,20 @@ class CustomerController extends Controller
         $user = Auth::user();
         $customerData = $user->customer()->first();
         $newData = $request->all();
+        
+        $validator = Validator::make($request->all(), [
+            'Nama_Konsumen' => 'required|regex:/^[a-zA-Z ]*$/',
+            'No_Telfon_Konsumen' => 'required|numeric',
+            'Alamat_Konsumen' => 'required',
+            'Foto_Profil_Konsumen' => '',
+            'line_id' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'error' => $validator->errors()
+            ], 400);
+        }
 
         DB::beginTransaction();
         try {
