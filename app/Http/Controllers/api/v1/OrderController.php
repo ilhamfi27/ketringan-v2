@@ -28,16 +28,17 @@ class OrderController extends Controller
         $checkout['Total_Harga'] = Menu::sumPrices($checkout['Id_Menu_Paket'], 
                         $checkout['Jumlah_Pemesanan']) - $uniqueCode;
         
+        $theDayAfterTomorrow = Carbon::today()->addDays(2);
         $validator = Validator::make($request->all(), [
             'nama' => 'required|regex:/^[a-zA-Z ]*$/',
             'Alamat_Pengiriman' => 'required',
             'No_Telfon_Aktif' => 'required|numeric',
             'No_Telfon_Alternatif' => 'numeric|different:No_Telefon_Aktif',
-            'Tanggal_Kegiatan' => 'required',
+            'Tanggal_Kegiatan' => 'required|after_or_equal:' . $theDayAfterTomorrow,
             'Waktu_Kegiatan' => 'required',
             'Id_Menu_Paket' => 'required',
             'Catatan' => 'required',
-            'Jumlah_Pemesanan' => 'required|numeric',
+            'Jumlah_Pemesanan' => 'required',
             'Metode_Pembayaran' => 'required',
             'Potongan_Diskon' => 'numeric',
             'Id_Bank' => 'required',
