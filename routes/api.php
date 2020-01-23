@@ -58,6 +58,7 @@ Route::prefix('v1')->group(function (){
         
         Route::group(['prefix' => 'user'], function () {
             Route::post('update', 'api\v1\UserController@updateCredentials');
+            Route::get('regenerate_token', 'api\v1\UserController@regenerateToken');
         });
 
         Route::group(['prefix' => 'konsumen'], function () {

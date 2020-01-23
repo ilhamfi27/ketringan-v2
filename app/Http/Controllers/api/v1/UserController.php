@@ -124,9 +124,10 @@ class UserController extends Controller
         $token = $request->input('token');
 
         if(isset($user->email_verified_at)) {
-            return response()->json([
-                'message' => 'Your email has been verified!',
-            ], 200);
+            return view('auth.email_verification_feedback')
+                    ->with([
+                        'email_status' => 'verified',
+                    ]);
         }
 
         if($user->verification_token == $token && !isset($user->email_verified_at)){
@@ -135,14 +136,54 @@ class UserController extends Controller
         }
 
         if ($user->verification_token != $token) {
-            return response()->json([
-                'message' => 'Invalid verification token!',
-            ], 401);
+            return view('auth.email_verification_feedback')
+                    ->with([
+                        'email_status' => 'invalid',
+                    ]);
+
         }
 
-        return response()->json([
-            'message' => 'Verification success!',
-        ], 200);
+        return view('auth.email_verification_feedback')
+                ->with([
+                    'email_status' => 'success',
+                ]);
+    }
+
+    public function regenerateToken()
+    {
+        $user = Auth::user();
+        if ($user->email_verified_at) {
+            return response()->json([
+                'message' => 'Email Sudah Terverifikasi',
+            ], 401);
+        }
+        
+        DB::beginTransaction();
+        try {
+            $konsumen = $user->customer()->first();
+            $generated_token = hash('sha256', str_random(40).$user->email);
+            $must_confirm = (object) [
+                'nama' => $konsumen->Nama_Konsumen,
+                'url' => env('APP_URL') 
+                        . '/api/v1/token_confirmation/'. $user->id 
+                        . '?token=' . $generated_token,
+            ];
+            
+            $user->verification_token = $generated_token;
+            $user->save();
+            DB::commit();
+
+            Mail::to($user)->send(new RegistrationConfirmation($must_confirm));
+
+            return response()->json([
+                'message' => 'Token Verifikasi Email Baru Telah Dikirim',
+                'email' => $user->email,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Internal Server Error: ' . $e,
+            ], 500);
+        }
     }
     
     public function details()
