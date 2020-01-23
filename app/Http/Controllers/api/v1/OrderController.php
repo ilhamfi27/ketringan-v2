@@ -39,8 +39,7 @@ class OrderController extends Controller
             'Catatan' => 'required',
             'Jumlah_Pemesanan' => 'required|numeric',
             'Metode_Pembayaran' => 'required',
-            'Kode_Diskon' => 'required',
-            'Potongan_Diskon' => 'required|numeric',
+            'Potongan_Diskon' => 'numeric',
             'Id_Bank' => 'required',
         ]);
 
