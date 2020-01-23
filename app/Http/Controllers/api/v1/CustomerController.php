@@ -79,7 +79,8 @@ class CustomerController extends Controller
     {
         $user = Auth::user();
         $customerData = $user->customer()->first();
-
+        $customerData->is_verifed = $customerData->is_verifed == 1 
+                                        ? true : false;
         return response()->json([
             'data' => $customerData,
         ], 200);
