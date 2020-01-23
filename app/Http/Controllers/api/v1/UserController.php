@@ -28,6 +28,7 @@ class UserController extends Controller
             $namaKonsumen = $user->customer()->first()->Nama_Konsumen;
             $response['token'] = $user->createToken('userLogin')->accessToken;
             $response['Nama_Konsumen'] = $namaKonsumen;
+            $response['user_verified'] = $user->email_verified_at != null ? true : false;
             return response()->json(
                 $response
             , 200);
