@@ -22,6 +22,7 @@ class MakePayment extends Mailable
     private $data_bank;
     private $nama;
     private $kode_pesanan;
+    private $jumlah_kotak;
     private $kode_unik;
     private $alamat;
     private $tanggal;
@@ -37,6 +38,7 @@ class MakePayment extends Mailable
         $this->data_bank = $payment->data_bank;
         $this->nama = $payment->nama;
         $this->kode_pesanan = $payment->kode_pesanan;
+        $this->jumlah_kotak = $payment->jumlah_kotak;
         $this->kode_unik = $payment->kode_unik;
         $this->alamat = $payment->alamat;
         $this->tanggal = $payment->tanggal;
@@ -61,6 +63,7 @@ class MakePayment extends Mailable
                         'data_bank'     => $this->data_bank,
                         'nama'          => $this->nama,
                         'kode_pesanan'  => $this->kode_pesanan,
+                        'jumlah_kotak'  => $this->jumlah_kotak,
                         'kode_unik'     => $this->kode_unik,
                         'alamat'        => $this->alamat,
                         'tanggal'       => $this->tanggal,

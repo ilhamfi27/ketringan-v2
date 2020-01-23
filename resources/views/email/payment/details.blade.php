@@ -552,7 +552,7 @@ float:right !important;
 																																															<tr>
 																																																<td valign="top" style="padding:10px">
 																																																	<div style="text-align:left;font-family:Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:15px;color:#3D3D3D;line-height:26px;mso-line-height:exactly;mso-text-raise:5px">
-																																																		<p style="padding: 0; margin: 0; text-align: center;">Rp <?php echo number_format($value->Harga) ?></p>
+																																																		<p style="padding: 0; margin: 0; text-align: center;">Rp <?php echo number_format($value->Harga_Paket) ?></p>
 																																																	</div>
 																																																</td>
 																																															</tr>
@@ -565,7 +565,7 @@ float:right !important;
 																																															<tr>
 																																																<td valign="top" style="padding:10px">
 																																																	<div style="text-align:left;font-family:Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:15px;color:#3D3D3D;line-height:26px;mso-line-height:exactly;mso-text-raise:5px">
-																																																		<p style="padding: 0; margin: 0; text-align: center;"><?php echo $value->Jumlah_Kotak ?></p>
+																																																		<p style="padding: 0; margin: 0; text-align: center;"><?php echo $jumlah_kotak[$key] ?></p>
 																																																	</div>
 																																																</td>
 																																															</tr>
@@ -578,12 +578,12 @@ float:right !important;
 																																															<tr>
 																																																<td valign="top" style="padding:10px">
 																																																	<div style="text-align:left;font-family:Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:15px;color:#3D3D3D;line-height:26px;mso-line-height:exactly;mso-text-raise:5px">
-																																																		<p style="padding: 0; margin: 0; text-align: center;">Rp <?php echo number_format($value->Harga*$value->Jumlah_Kotak) ?></p>
+																																																		<p style="padding: 0; margin: 0; text-align: center;">Rp <?php echo number_format($jumlah_kotak[$key]*$value->Harga_Paket) ?></p>
 																																																	</div>
 																																																</td>
 																																															</tr>
 																																														</table>
-																																														<?php $total += $value->Jumlah_Kotak*$value->Harga ?>
+																																														<?php $total += $jumlah_kotak[$key]*$value->Harga_Paket ?>
 																																													</td>
 																																												</tr>
 																																												<?php $nomor++; endforeach; ?>

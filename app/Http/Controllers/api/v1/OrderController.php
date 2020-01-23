@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Cart;
 use App\Discount;
+use App\Mail\FinanceNotification;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -145,16 +146,17 @@ class OrderController extends Controller
             });
 
             DB::commit();
-            
+
             $user = Auth::user();
             $paymentDetail = (object) [
-                'data_menu' => Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket']),
+                'data_menu' => Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket'])->get(),
                 'syarat' => '#',
                 'link' => env('APP_URL') 
                           . '/api/v1/order/detail/'. $kodePesanan,
                 'data_bank' => Bank::find($checkout['Id_Bank']),
                 'nama' => $checkout['nama'],
                 'kode_pesanan' => $kodePesanan,
+                'jumlah_kotak' => $checkout['Jumlah_Pemesanan'],
                 'kode_unik' => $uniqueCode,
                 'alamat' => $checkout['Alamat_Pengiriman'],
                 'tanggal' => $checkout['Tanggal_Kegiatan'],
@@ -164,7 +166,8 @@ class OrderController extends Controller
             ];
 
             Mail::to($user)->send(new MakePayment($paymentDetail));
-        
+            Mail::to('fadhilahilham.27@gmail.com')->send(new FinanceNotification($paymentDetail));
+
             return response()->json([
                 'message' => 'Checkout Successful!',
                 'data' => [
