@@ -28,8 +28,9 @@ class UserController extends Controller
             $namaKonsumen = $user->customer()->first()->Nama_Konsumen;
             $response['token'] = $user->createToken('userLogin')->accessToken;
             $response['Nama_Konsumen'] = $namaKonsumen;
-            $response['email'] = $user->email;
+            $response['Email_Konsumen'] = $user->email;
             $response['is_verifed'] = $user->email_verified_at != null ? true : false;
+            $response['socialized_account'] = false;
             return response()->json(
                 $response
             , 200);
@@ -88,6 +89,7 @@ class UserController extends Controller
 
         $success['Nama_Konsumen'] = $konsumen->Nama_Konsumen;
         $success['Email_Konsumen'] = $user->email; // pakai email dari tabel users
+        $success['socialized_account'] = false;
 
         /**
          * Mail sender untuk mengirimkan token konfirmasi
