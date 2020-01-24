@@ -10,11 +10,18 @@ use App\Testimoni;
 
 class HomeController extends Controller
 {
-    public function mainScreen()
+    public function mainScreen(Request $request)
     {
-        $vouchers = Discount::enabled()->get();
-        $testimoni = Testimoni::enabled()->get();
-        $memberships = Customer::where('Membership', 'VIP')->get();
+        $voucherLimit = $request->voucherLimit == null ? 
+                            3 : $request->voucherLimit;
+        $testimoniLimit = $request->testimoniLimit == null ? 
+                            3 : $request->testimoniLimit;
+        $membershipLimit = $request->membershipLimit == null ? 
+                            8 : $request->membershipLimit;
+                            
+        $vouchers = Discount::enabled()->limit($voucherLimit)->get();
+        $testimoni = Testimoni::enabled()->limit($testimoniLimit)->get();
+        $memberships = Customer::where('Membership', 'VIP')->limit($membershipLimit)->get();
 
         return response()->json([
             'data' => [
