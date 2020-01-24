@@ -67,6 +67,7 @@ class SocialAuthGoogleController extends Controller
                     'Nama_Konsumen' => $data_user->Nama_Konsumen,
                     'email' => $user->email,
                     'is_verified' => true,
+                    'socialized_account' => true,
                 ]);
             } else {
                 $user = Auth::user();
@@ -78,6 +79,7 @@ class SocialAuthGoogleController extends Controller
                     'Nama_Konsumen' => $konsumen->Nama_Konsumen,
                     'email' => $user->email,
                     'is_verified' => true,
+                    'socialized_account' => true,
                 ]);
             }
         } catch (Exception $e) {
