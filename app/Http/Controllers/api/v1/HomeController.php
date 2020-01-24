@@ -12,9 +12,9 @@ class HomeController extends Controller
 {
     public function mainScreen()
     {
-        $vouchers = Discount::enabled()->limit(3)->get();
-        $testimoni = Testimoni::enabled()->limit(3)->get();
-        $memberships = Customer::where('Membership', 'VIP')->limit(8)->get();
+        $vouchers = Discount::enabled()->get();
+        $testimoni = Testimoni::enabled()->get();
+        $memberships = Customer::where('Membership', 'VIP')->get();
 
         return response()->json([
             'data' => [
