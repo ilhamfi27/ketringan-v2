@@ -30,11 +30,14 @@ class MenuController extends Controller
         $minPrice = $request->min_price != null ? 
                     $request->min_price : null;
 
+        $priceSort = $request->price_sort != null ? 
+                    $request->price_sort : null;
+
         $paginationNum = $request->pagination_num != null ? 
                     $request->pagination_num : null;
 
         $menu = Menu::getMenu($idJenisMenu, $idKategori, $idRegion, $maxPrice, 
-                            $minPrice, $paginationNum);
+                            $minPrice, $paginationNum, $priceSort);
 
         $kategori = MenuCategory::where('Id_Jenis_Menu', $request->id_jenis_menu)
                         ->get();
