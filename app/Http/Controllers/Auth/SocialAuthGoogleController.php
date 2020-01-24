@@ -11,6 +11,7 @@ use Exception;
 use App\User;
 use App\Customer;
 use App\SocializedAccount;
+use Illuminate\Support\Facades\DB;
 
 class SocialAuthGoogleController extends Controller
 {
@@ -33,53 +34,54 @@ class SocialAuthGoogleController extends Controller
             $googleId = $googleUser->id;
 
             if(!$this->userSocialiteRegistered($googleId)){
-                $user = new User;
-                $random_password = str_random(40);
-                $user->email = $googleUser->email;
-                $user->password = $random_password;
-                $user->email_verified_at = Carbon::now()->timestamp;
-                $user->save();
-    
-                $data_user = new Customer;
-                $data_user->Nama_Konsumen = $googleUser->name;
-                $data_user->Foto_Profil_Konsumen = $googleUser->avatar;
-                $data_user->Password = $random_password;
-                $data_user->user_id = $user->id;
-                $data_user->save();
-    
-                $socializedAccount = new SocializedAccount;
-                $socializedAccount->account_id = $googleUser->id;
-                $socializedAccount->provider = 'google';
-                $socializedAccount->user_id = $user->id;
-                $socializedAccount->save();
-
-                /**
-                 * token untuk login aplikasi
-                 */
-                $success['token'] = $user->createToken('userRegister')->accessToken;
-                
-                $success['nama_konsumen'] = $data_user->Nama_Konsumen;
-                $success['email_konsumen'] = $user->email; // pakai email dari tabel users
+                DB::beginTransaction();
+                try {
+                    $user = new User;
+                    $random_password = str_random(40);
+                    $user->email = $googleUser->email;
+                    $user->password = $random_password;
+                    $user->email_verified_at = Carbon::now()->timestamp;
+                    $user->save();
         
-                /**
-                 * $success untuk nilai balikan register()
-                 * 
-                 * $success['token'] -> token
-                 * $success['nama_konsumen'] -> nama konsumen
-                 * $success['email_konsumen'] -> email konsumen
-                 */
+                    $data_user = new Customer;
+                    $data_user->Nama_Konsumen = $googleUser->name;
+                    $data_user->Foto_Profil_Konsumen = $googleUser->avatar;
+                    $data_user->Password = $random_password;
+                    $data_user->user_id = $user->id;
+                    $data_user->save();
+        
+                    $socializedAccount = new SocializedAccount;
+                    $socializedAccount->account_id = $googleUser->id;
+                    $socializedAccount->provider = 'google';
+                    $socializedAccount->user_id = $user->id;
+                    $socializedAccount->save();
+                    DB::commit();
+                } catch (\Exception $e) { 
+                    DB::rollback();
+                    echo $e; 
+                }
+                $token = $user->createToken('userLogin')->accessToken;
 
-                return response()->json($success, 200);
+                return view('auth.social_callback')->with([
+                    'token' => $token,
+                    'Nama_Konsumen' => $data_user->Nama_Konsumen,
+                    'email' => $user->email,
+                    'is_verified' => true,
+                ]);
+            } else {
+                $user = Auth::user();
+                $konsumen = $user->customer()->first();
+                $token = $user->createToken('userLogin')->accessToken;
+    
+                return view('auth.social_callback')->with([
+                    'token' => $token,
+                    'Nama_Konsumen' => $konsumen->Nama_Konsumen,
+                    'email' => $user->email,
+                    'is_verified' => true,
+                ]);
             }
-
-            $user = Auth::user();
-            $success['token'] = $user->createToken('userLogin')->accessToken;
-            return response()->json([
-                'success' => $success
-            ], 200);
-
         } catch (Exception $e) {
-            return 'error: ' . $e;
+            // echo $e;
         }
     }
 
