@@ -37,10 +37,8 @@ class OrderController extends Controller
             'Tanggal_Kegiatan' => 'required|after_or_equal:' . $theDayAfterTomorrow,
             'Waktu_Kegiatan' => 'required',
             'Id_Menu_Paket' => 'required',
-            'Catatan' => 'required',
             'Jumlah_Pemesanan' => 'required',
             'Metode_Pembayaran' => 'required',
-            'Potongan_Diskon' => 'numeric',
             'Id_Bank' => 'required',
         ]);
 
