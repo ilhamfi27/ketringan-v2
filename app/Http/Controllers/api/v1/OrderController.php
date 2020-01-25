@@ -33,8 +33,7 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required|regex:/^[a-zA-Z ]*$/',
             'Alamat_Pengiriman' => 'required',
-            'No_Telfon_Aktif' => 'required|numeric',
-            'No_Telfon_Alternatif' => 'numeric|different:No_Telefon_Aktif',
+            'No_Telfon_Aktif' => 'required',
             'Tanggal_Kegiatan' => 'required|after_or_equal:' . $theDayAfterTomorrow,
             'Waktu_Kegiatan' => 'required',
             'Id_Menu_Paket' => 'required',
