@@ -18,6 +18,7 @@ Route::get('api/facebook_login_callback', 'Auth\SocialAuthFacebookController@log
 Route::get('testing_ae/', 'TestingAeController@index');
 Route::get('mail_display_test/', 'TestingAeController@email_display');
 Route::get('the_new_mail_display_test/', 'TestingAeController@the_new_email_display');
+Auth::routes();
 Route::get('/', function () {
     return view('welcome');
 });
