@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Menu;
 
 class CartController extends Controller
 {
@@ -26,7 +27,7 @@ class CartController extends Controller
             $detailMenu = [
                 'Nama_Paket' => $menu->Nama_Paket,
                 'Gambar_Paket' => $menu->Gambar_Paket,
-                'Harga_Paket' => $menu->Harga_Paket,
+                'Harga_Paket' => Menu::addPrice($menu->Harga_Paket),
                 'Minimal_Pemesanan' => $vendor->Minimal_Pemesanan,
                 'Nama_Vendor' => $vendor->Nama_Vendor,
             ];

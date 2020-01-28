@@ -93,7 +93,7 @@ class OrderController extends Controller
                     'Catatan' => $checkout['Catatan'],
                     'Jumlah_Kotak' => $checkout['Jumlah_Pemesanan'][$idx],
                     'Id_Pesanan' => $order->Id_Pesanan,
-                    'Harga' => $menuPrice,
+                    'Harga' => Menu::addPrice($menuPrice),
                 ];
             }
             $orderedMenu = OrderedMenu::insert($orderedData);
