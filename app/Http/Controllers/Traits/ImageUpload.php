@@ -7,23 +7,44 @@ trait ImageUpload
 {
     public function storePaymentProof($file)
     {
-        if(env('APP_ENV') != 'local'){
-            Cloudder::upload($file, null, [
-                'folder' => 'ketringan/payment_confirmation/'
-            ]);
-            return Cloudder::getResult()['url']; // to direct get image url from cloudinary
+        if(env('APP_ENV') == 'staging'){
+            return $this->coudinaryUpload($file, 'payment_confirmation');
+        } else if (env('APP_ENV') == 'production') {
+            return $this->customImageUpload($file, 'bukti_trf');
         }
-        return $file->store('proof_of_payment');
+        return $this->customImageUpload($file, 'bukti_trf');
     }
 
     public function userAvatarUpdate($file)
     {
-        if(env('APP_ENV') != 'local'){
-            Cloudder::upload($file, null, [
-                'folder' => 'ketringan/user_avatar/'
-            ]);
-            return Cloudder::getResult()['url']; // to direct get image url from cloudinary
+        if(env('APP_ENV') == 'staging'){
+            return $this->coudinaryUpload($file, 'user_avatar');
+        } else if (env('APP_ENV') == 'production') {
+            return $this->customImageUpload($file, 'konsumen');
         }
-        return $file->store('user_avatar');
+        return $this->customImageUpload($file, 'konsumen');
+    }
+
+    private function coudinaryUpload($file, $folder)
+    {
+        Cloudder::upload($file, null, [
+            'folder' => 'ketringan/' . $folder
+        ]);
+        return Cloudder::getResult()['url']; // to direct get image url from cloudinary
+    }
+
+    private function customImageUpload($file, $folder)
+    {
+        /* get File Extension */
+        $extension = $file->getClientOriginalExtension();
+
+        /* Your File Destination */
+        $directoryTarget = base_path()."/../public_html/images/" . $folder;
+    
+        /* unique Name for file */
+        $filename = uniqid() . '.' . $extension;
+    
+        /* finally move file to your destination */
+        return $file->move($directoryTarget,  $filename);
     }
 }
