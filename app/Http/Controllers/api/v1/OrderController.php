@@ -147,7 +147,9 @@ class OrderController extends Controller
 
             $user = Auth::user();
             $paymentDetail = (object) [
-                'data_menu' => Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket'])->get(),
+                'data_menu' => Menu::addValueToPrice(
+                                Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket'])->get()
+                            ),
                 'syarat' => '#',
                 'link' => env('APP_URL') 
                           . '/api/v1/order/detail/'. $kodePesanan,
@@ -164,7 +166,7 @@ class OrderController extends Controller
             ];
 
             Mail::to($user)->send(new MakePayment($paymentDetail));
-            Mail::to('fadhilahilham.27@gmail.com')->send(new FinanceNotification($paymentDetail));
+            Mail::to('finance@ketringan.com')->send(new FinanceNotification($paymentDetail));
 
             return response()->json([
                 'message' => 'Checkout Successful!',
