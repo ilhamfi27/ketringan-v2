@@ -47,7 +47,9 @@ class Menu extends Model
             ->join('tb_mv_kategorimenu', 'tb_mv_kategorimenu.Id_Menu_Paket', '=', 'tb_menu_paket.Id_Menu_Paket')
             ->join('tb_kategori_paket', 'tb_kategori_paket.Id_Kategori_Menu', '=', 'tb_mv_kategorimenu.Id_Kategori_Menu')
             ->join('tb_jenis_paket', 'tb_jenis_paket.Id_Jenis_Menu', '=', 'tb_kategori_paket.Id_Jenis_Menu')
-            ->select('tb_menu_paket.*', 'tb_region.Region', 'tb_subregion.Subregion', 'tb_vendor.*')
+            ->leftJoin('tb_diskon', 'tb_diskon.Id_Diskon', '=', 'tb_menu_paket.Id_Diskon')
+            ->select('tb_menu_paket.*', 'tb_region.Region', 'tb_subregion.Subregion', 
+                        'tb_vendor.*', 'tb_diskon.*')
             ->groupBy('tb_menu_paket.Id_Menu_Paket');
 
         if ($idJenisMenu != null) {
