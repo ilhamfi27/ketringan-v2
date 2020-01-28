@@ -189,30 +189,37 @@ class OrderController extends Controller
             'belum_dibayar' => [
                 'is_button' => true,
                 'button_text' => 'Konfirmasi Pembayaran',
+                'is_disabled' => false,
             ],
             'menunggu_verifikasi' => [
                 'is_button' => false,
                 'button_text' => 'Pembayaran anda sedang dikonfimasi oleh pihak kami maximal 1x 24 jam pada jam kerja',
+                'is_disabled' => false,
             ],
             'diproses' => [
                 'is_button' => false,
                 'button_text' => 'Pesanan kamu sedang diproses',
+                'is_disabled' => false,
             ],
             'belum_dikirim' => [
                 'is_button' => false,
                 'button_text' => 'Pesanan kamu sudah selesai diproses, dan akan dikirim sesuai dengan waktu pengiriman',
+                'is_disabled' => false,
             ],
             'dikirim' => [
                 'is_button' => false,
                 'button_text' => 'Pesanan kamu sedang dalam perjalanan',
+                'is_disabled' => false,
             ],
             'selesai' => [
                 'is_button' => true,
                 'button_text' => 'Cetak Invoice',
+                'is_disabled' => true,
             ],
             'dibatalkan' => [
                 'is_button' => false,
                 'button_text' => 'Pesanan kamu dibatalkan, yuk pesan lagi',
+                'is_disabled' => false,
             ],
         ];
 
