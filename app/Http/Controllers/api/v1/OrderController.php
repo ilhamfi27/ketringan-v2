@@ -70,6 +70,7 @@ class OrderController extends Controller
                 'Tanggal_Pesan' => Carbon::now(),
                 'Id_Konsumen' => $idKonsumen,
                 'Kode_Pesanan' => $kodePesanan,
+                'Status_Pesanan' => 'belum_dibayar',
             ];
             $order = Order::create($checkout + $orderCompleteData);
 
@@ -184,6 +185,37 @@ class OrderController extends Controller
 
     public function detail(Request $request)
     {
+        $responseButton = [
+            'belum_dibayar' => [
+                'is_button' => true,
+                'button_text' => 'Konfirmasi Pembayaran',
+            ],
+            'menunggu_verifikasi' => [
+                'is_button' => false,
+                'button_text' => 'Pembayaran anda sedang dikonfimasi oleh pihak kami maximal 1x 24 jam pada jam kerja',
+            ],
+            'diproses' => [
+                'is_button' => false,
+                'button_text' => 'Pesanan kamu sedang diproses',
+            ],
+            'belum_dikirim' => [
+                'is_button' => false,
+                'button_text' => 'Pesanan kamu sudah selesai diproses, dan akan dikirim sesuai dengan waktu pengiriman',
+            ],
+            'dikirim' => [
+                'is_button' => false,
+                'button_text' => 'Pesanan kamu sedang dalam perjalanan',
+            ],
+            'selesai' => [
+                'is_button' => true,
+                'button_text' => 'Cetak Invoice',
+            ],
+            'dibatalkan' => [
+                'is_button' => false,
+                'button_text' => 'Pesanan kamu dibatalkan, yuk pesan lagi',
+            ],
+        ];
+
         $kodePesanan = $request->route('code');
         $idKonsumen = $this->getKonsumenId();
         $order = Order::where('Kode_Pesanan', $kodePesanan)
@@ -197,11 +229,12 @@ class OrderController extends Controller
 
         $dataPesanan = Order::detail($order->Id_Pesanan);
         $dataMenu = OrderedMenu::orderDetail($order->Id_Pesanan);
-        
+
         return response()->json([
             'data' => [
                 'pesanan' => $dataPesanan,
                 'menu' => $dataMenu,
+                'button_display' => $responseButton[$dataPesanan->Status_Pesanan],
             ],
         ], 200);
     }
