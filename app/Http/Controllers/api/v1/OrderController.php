@@ -27,7 +27,7 @@ class OrderController extends Controller
         $uniqueCode = rand(1,300);
         $checkout = $request->all();
         $checkout['Total_Harga'] = Menu::sumPrices($checkout['Id_Menu_Paket'], 
-                        $checkout['Jumlah_Pemesanan']) - $uniqueCode;
+                        $checkout['Jumlah_Pemesanan']) + $uniqueCode;
         
         $theDayAfterTomorrow = Carbon::today()->addDays(2)->toDateString();
         $validator = Validator::make($request->all(), [
