@@ -97,7 +97,6 @@ class CustomerController extends Controller
             'No_Telfon_Konsumen' => 'required|numeric',
             'Alamat_Konsumen' => 'required',
             'Foto_Profil_Konsumen' => '',
-            'line_id' => 'required',
         ]);
 
         if($validator->fails()){
