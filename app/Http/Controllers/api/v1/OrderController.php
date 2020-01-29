@@ -146,12 +146,14 @@ class OrderController extends Controller
             DB::commit();
 
             $user = Auth::user();
+            $baseUrl = env('APP_ENV') == 'staging' 
+                        ? env('APP_FRONT_END_URL') : env('APP_URL').env('FRONT_END_PORT');
             $paymentDetail = (object) [
                 'data_menu' => Menu::addValueToPrice(
                                 Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket'])->get()
                             ),
                 'syarat' => '#',
-                'link' => env('APP_URL').env('FRONT_END_PORT') 
+                'link' => $baseUrl
                           . '/order/detail/'. $kodePesanan,
                 'data_bank' => Bank::find($checkout['Id_Bank']),
                 'nama' => $checkout['nama'],
