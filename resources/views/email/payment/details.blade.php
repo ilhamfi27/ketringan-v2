@@ -668,7 +668,7 @@ float:right !important;
 																																															<tr>
 																																																<td valign="top" style="padding:10px">
 																																																	<div style="text-align:left;font-family:Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:15px;color:#3D3D3D;line-height:26px;mso-line-height:exactly;mso-text-raise:5px">
-																																																		<p style="padding: 0; margin: 0; text-align: center;">{{ $kode_unik }}</p>
+																																																		<p style="padding: 0; margin: 0; text-align: center;">+ Rp {{ $kode_unik }}</p>
 																																																	</div>
 																																																</td>
 																																															</tr>
