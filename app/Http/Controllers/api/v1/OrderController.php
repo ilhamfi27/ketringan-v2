@@ -151,8 +151,8 @@ class OrderController extends Controller
                                 Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket'])->get()
                             ),
                 'syarat' => '#',
-                'link' => env('APP_URL') 
-                          . '/api/v1/order/detail/'. $kodePesanan,
+                'link' => env('APP_URL').env('FRONT_END_PORT') 
+                          . '/order/detail/'. $kodePesanan,
                 'data_bank' => Bank::find($checkout['Id_Bank']),
                 'nama' => $checkout['nama'],
                 'kode_pesanan' => $kodePesanan,

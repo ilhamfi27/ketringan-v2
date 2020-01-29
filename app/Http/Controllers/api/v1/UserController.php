@@ -97,7 +97,7 @@ class UserController extends Controller
          */
         $must_confirm = (object) [
             'nama' => $konsumen->Nama_Konsumen,
-            'url' => env('APP_URL') 
+            'url' => env('APP_URL').env('APP_PORT') 
                     . '/api/v1/token_confirmation/'. $user->id 
                     . '?token=' . $generated_token,
         ];
@@ -166,7 +166,7 @@ class UserController extends Controller
             $generated_token = hash('sha256', str_random(40).$user->email);
             $must_confirm = (object) [
                 'nama' => $konsumen->Nama_Konsumen,
-                'url' => env('APP_URL') 
+                'url' => env('APP_URL').env('APP_PORT') 
                         . '/api/v1/token_confirmation/'. $user->id 
                         . '?token=' . $generated_token,
             ];

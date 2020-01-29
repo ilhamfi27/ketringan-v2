@@ -10,17 +10,17 @@
                 <div class="card-body">
                     @if ($email_status == 'success')
                         <p>Verifikasi Email Sukses!</p>
-                        <a href="{{ ENV('APP_LANDING_PAGE') }}">Kembali ke Halaman Awal</a>
+                        <a href="{{ env('APP_URL').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
                     @endif
 
                     @if ($email_status == 'verified')
                         <p>Email Telah Diverifikasi!</p>
-                        <a href="{{ ENV('APP_LANDING_PAGE') }}">Kembali ke Halaman Awal</a>
+                        <a href="{{ env('APP_URL').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
                     @endif
                     
                     @if ($email_status == 'invalid')
                         <p>Token Verifikasi Salah!</p>
-                        <a href="{{ ENV('APP_LANDING_PAGE') }}">Kembali ke Halaman Awal</a>
+                        <a href="{{ env('APP_URL').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
                     @endif
                 </div>
             </div>

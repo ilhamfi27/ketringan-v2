@@ -45,6 +45,8 @@ trait ImageUpload
         $filename = uniqid() . '.' . $extension;
     
         /* finally move file to your destination */
-        return $file->move($directoryTarget,  $filename);
+        $file->move($directoryTarget,  $filename);
+
+        return env('APP_URL').'/images/' . $folder . '/' . $filename;
     }
 }

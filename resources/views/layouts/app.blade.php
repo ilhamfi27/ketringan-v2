@@ -41,7 +41,7 @@
     </div>
     @include('layouts.footer')
     <script>
-        const APP_URL = "{{ env('APP_URL') }}";
+        const APP_URL = "{{ env('APP_URL').env('APP_PORT') }}";
     </script>
     <script src="{{ asset('js/main.js') }}"></script>
     @yield('extra_scripts')
