@@ -22,6 +22,11 @@ class HomeController extends Controller
         $vouchers = Discount::enabled()->limit($voucherLimit)->get();
         $testimoni = Testimoni::enabled()->limit($testimoniLimit)->get();
         $memberships = Customer::where('Membership', 'VIP')->limit($membershipLimit)->get();
+        
+        $vouchers = $vouchers->toArray();
+        foreach ($vouchers as $key => $voucher) {
+            $vouchers[$key]['Ketentuan'] = array_filter(explode(";", $vouchers[$key]['Ketentuan']));
+        }
 
         return response()->json([
             'data' => [
