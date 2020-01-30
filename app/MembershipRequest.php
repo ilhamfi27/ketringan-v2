@@ -21,4 +21,13 @@ class MembershipRequest extends Model
         'Alamat',
         'Catatan',
     ];
+
+    public static function stringify($membersipRequests)
+    {
+        foreach ($membersipRequests as $key => $membersipRequest) {
+            $membersipRequests[$key]['Status_Request'] = ucwords(
+                str_replace("_", " ", $membersipRequests[$key]['Status_Request']));
+        }
+        return $membersipRequests;
+    }
 }
