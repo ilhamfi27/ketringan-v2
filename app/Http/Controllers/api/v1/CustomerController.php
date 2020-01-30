@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\QuickOrder;
 
 class CustomerController extends Controller
 {
@@ -68,10 +69,20 @@ class CustomerController extends Controller
     {
         $user = Auth::user();
         $id_konsumen = $user->customer()->first()->Id_Konsumen;
-        $membership_request = MembershipRequest::where('Id_Konsumen', $id_konsumen)->get();
+        $membersRequests = MembershipRequest::where('Id_Konsumen', $id_konsumen)
+                                ->select('Status_Request', 'created_at')
+                                ->get()->toArray();
+        $membersRequests[0]['kategori_status'] = 'Membership';
+        $quickOrders = QuickOrder::where('Id_Konsumen', $id_konsumen)
+                                ->select('Status', 'created_at')
+                                ->get()->toArray();
+        foreach ($quickOrders as $key => $value) {
+            $quickOrders[$key]['kategori_status'] = 'Negoisasi';
+            array_push($membersRequests, $quickOrders[$key]);
+        }
 
         return response()->json([
-            'data' => $membership_request,
+            'data' => $membersRequests,
         ], 200);
     }
 

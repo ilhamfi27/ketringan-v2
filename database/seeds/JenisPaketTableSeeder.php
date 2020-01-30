@@ -14,10 +14,12 @@ class JenisPaketTableSeeder extends Seeder
     {
         DB::table('tb_jenis_paket')->delete();
         $allData = [
-            [1, 'Paket'],
+            [1, 'Box'],
             [2, 'Ala Carte'],
             [4, 'Khusus'],
             [5, 'Harian'],
+            [6, 'Prasmanan'],
+            [7, 'Snack'],
         ];
         foreach ($allData as $data) {
             DB::table('tb_jenis_paket')->insert([
