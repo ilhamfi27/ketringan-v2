@@ -22,7 +22,7 @@ class MembershipRequest extends Model
         'Catatan',
     ];
 
-    public static function stringify($membersipRequests)
+    public static function statusStringify($membersipRequests)
     {
         foreach ($membersipRequests as $key => $membersipRequest) {
             $membersipRequests[$key]['Status_Request'] = ucwords(

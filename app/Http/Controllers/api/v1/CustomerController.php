@@ -73,11 +73,11 @@ class CustomerController extends Controller
                                 ->select('Status_Request', 'created_at')
                                 ->get()->toArray();
         $membersRequests[0]['kategori_status'] = 'Membership';
-        $membersRequests = MembershipRequest::stringify($membersRequests);
+        $membersRequests = MembershipRequest::statusStringify($membersRequests);
         $quickOrders = QuickOrder::where('Id_Konsumen', $id_konsumen)
                                 ->select('Status', 'created_at')
                                 ->get()->toArray();
-        $quickOrders = QuickOrder::stringify($quickOrders);
+        $quickOrders = QuickOrder::statusStringify($quickOrders);
         foreach ($quickOrders as $key => $value) {
             $quickOrders[$key]['kategori_status'] = 'Negoisasi';
             array_push($membersRequests, $quickOrders[$key]);

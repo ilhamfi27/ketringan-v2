@@ -21,7 +21,7 @@ class QuickOrder extends Model
         'Jumlah_Pesanan','Total_Budget','Harga_Perkotak','Catatan_Pemesanan','Status','Id_Konsumen','Alamat',
     ];
 
-    public static function stringify($quickOrders)
+    public static function statusStringify($quickOrders)
     {
         foreach ($quickOrders as $key => $quickOrder) {
             $quickOrders[$key]['Status'] = ucwords(

@@ -89,7 +89,7 @@ class Menu extends Model
         return $totalPrice;
     }
 
-    public static function addValueToPrice($menus, $addPrice = 3000)
+    public static function addValueToPrice($menus, $addPrice = 3500)
     {
         foreach ($menus as $i => $menu) {
             $menu->Harga_Paket += $addPrice;
@@ -97,7 +97,7 @@ class Menu extends Model
         return $menus;
     }
 
-    public static function addPrice($price, $addPrice = 3000)
+    public static function addPrice($price, $addPrice = 3500)
     {
         return $price += $addPrice;
     }
