@@ -142,11 +142,16 @@ class UserController extends Controller
                     ->with([
                         'email_status' => 'invalid',
                     ]);
-
         }
 
+        $konsumen = $user->customer()->first();
         return view('auth.email_verification_feedback')
                 ->with([
+                    'token' => $token,
+                    'Nama_Konsumen' => $konsumen->Nama_Konsumen,
+                    'email' => $user->email,
+                    'is_verified' => true,
+                    'socialized_account' => true,
                     'email_status' => 'success',
                 ]);
     }
