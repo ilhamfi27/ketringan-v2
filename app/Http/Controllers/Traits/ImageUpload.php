@@ -47,6 +47,6 @@ trait ImageUpload
         /* finally move file to your destination */
         $file->move($directoryTarget,  $filename);
 
-        return env('APP_URL').'/images/' . $folder . '/' . $filename;
+        return env('APP_LANDING_PAGE').'/images/' . $folder . '/' . $filename;
     }
 }

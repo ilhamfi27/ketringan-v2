@@ -110,7 +110,7 @@ class UserController extends Controller
         $must_confirm = (object) [
             'nama' => $konsumen->Nama_Konsumen,
             'url' => env('APP_URL').env('APP_PORT') 
-                    . 'api/v1/token_confirmation/'. $user->id 
+                    . '/api/v1/token_confirmation/'. $user->id 
                     . '?token=' . $generated_token,
         ];
         Mail::to($user)->send(new RegistrationConfirmation($must_confirm));
