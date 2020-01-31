@@ -8,6 +8,6 @@
     };
     localStorage.setItem('AuthToken', JSON.stringify(data));
     if (localStorage.getItem('AuthToken') != null) {
-        window.location = "{{ env('APP_URL').env('APP_PORT') }}";
+        window.location = "{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}";
     }
 </script>
