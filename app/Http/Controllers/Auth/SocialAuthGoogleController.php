@@ -32,6 +32,13 @@ class SocialAuthGoogleController extends Controller
             $googleUser = $this->googleSocialite->user();
 
             $googleId = $googleUser->id;
+            
+            $existingUser = User::where('email', $googleUser->email)->count();
+            if($existingUser > 1){
+                return view('auth.social_callback')->with([
+                    'user_exists' => true,
+                ]);
+            }
 
             if(!$this->userSocialiteRegistered($googleId)){
                 DB::beginTransaction();
@@ -58,7 +65,9 @@ class SocialAuthGoogleController extends Controller
                     DB::commit();
                 } catch (\Exception $e) { 
                     DB::rollback();
-                    echo $e; 
+                    return view('auth.social_callback')->with([
+                        'error_response' => true,
+                    ]);
                 }
                 $token = $user->createToken('userLogin')->accessToken;
 
@@ -68,6 +77,7 @@ class SocialAuthGoogleController extends Controller
                     'email' => $user->email,
                     'is_verified' => true,
                     'socialized_account' => true,
+                    'user_exists' => false,
                 ]);
             } else {
                 $user = Auth::user();
@@ -80,6 +90,7 @@ class SocialAuthGoogleController extends Controller
                     'email' => $user->email,
                     'is_verified' => true,
                     'socialized_account' => true,
+                    'user_exists' => false,
                 ]);
             }
         } catch (Exception $e) {
