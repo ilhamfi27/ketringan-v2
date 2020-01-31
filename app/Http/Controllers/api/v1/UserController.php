@@ -13,6 +13,7 @@ use App\Customer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Validator;
+use Mockery\Exception;
 
 class UserController extends Controller
 {
@@ -29,7 +30,7 @@ class UserController extends Controller
             $response['token'] = $user->createToken('userLogin')->accessToken;
             $response['Nama_Konsumen'] = $namaKonsumen;
             $response['Email_Konsumen'] = $user->email;
-            $response['is_verifed'] = $user->email_verified_at != null ? true : false;
+            $response['is_verified'] = $user->email_verified_at != null ? true : false;
             $response['socialized_account'] = false;
             return response()->json(
                 $response
@@ -124,17 +125,13 @@ class UserController extends Controller
     {
         $user = User::find($request->route('id'));
         $token = $request->input('token');
+        $konsumen = $user->customer()->first();
 
         if(isset($user->email_verified_at)) {
             return view('auth.email_verification_feedback')
                     ->with([
                         'email_status' => 'verified',
                     ]);
-        }
-
-        if($user->verification_token == $token && !isset($user->email_verified_at)){
-            $user->email_verified_at = Carbon::now()->timestamp;
-            $user->save();
         }
 
         if ($user->verification_token != $token) {
@@ -144,16 +141,33 @@ class UserController extends Controller
                     ]);
         }
 
-        $konsumen = $user->customer()->first();
-        return view('auth.email_verification_feedback')
-                ->with([
-                    'token' => $token,
-                    'Nama_Konsumen' => $konsumen->Nama_Konsumen,
-                    'email' => $user->email,
-                    'is_verified' => true,
-                    'socialized_account' => true,
-                    'email_status' => 'success',
-                ]);
+        if($user->verification_token == $token && !isset($user->email_verified_at)){
+            DB::beginTransaction();
+            try {
+                $user->email_verified_at = Carbon::now()->timestamp;
+                $user->save();
+
+                $konsumen->is_verifed = true;
+                $konsumen->save();
+                DB::commit();
+
+                return view('auth.email_verification_feedback')
+                        ->with([
+                            'token' => $token,
+                            'Nama_Konsumen' => $konsumen->Nama_Konsumen,
+                            'email' => $user->email,
+                            'is_verified' => true,
+                            'socialized_account' => true,
+                            'email_status' => 'success',
+                        ]);
+            } catch (Exception $e) {
+                DB::rollback();
+                return view('auth.email_verification_feedback')
+                        ->with([
+                            'error_response' => true,
+                        ]);
+            }
+        }
     }
 
     public function regenerateToken()

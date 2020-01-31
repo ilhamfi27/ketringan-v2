@@ -91,9 +91,10 @@ class CustomerController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $customerData = $user->customer()->first();
-        $customerData->is_verifed = $customerData->is_verifed == 1 
+        $customerData = $user->customer()->first()->toArray();
+        $customerData['is_verified'] = $customerData['is_verifed'] == 1 
                                         ? true : false;
+        unset($customerData['is_verifed']);
         return response()->json([
             'data' => $customerData,
         ], 200);

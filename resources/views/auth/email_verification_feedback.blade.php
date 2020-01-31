@@ -8,27 +8,33 @@
                 <div class="card-header">Verifikasi Email</div>
 
                 <div class="card-body">
-                    @if ($email_status == 'success')
-                        <p>Verifikasi Email Sukses!</p>
+                    @if (isset($error_response))
+                        <p>Mohon maaf, sedang terjadi kesalahan pada sistem.</p>
                         <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
+                    @else
+                        @if ($email_status == 'success')
+                            <p>Verifikasi Email Sukses!</p>
+                            <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
+                        @endif
+
+                        @if ($email_status == 'verified')
+                            <p>Email Telah Diverifikasi!</p>
+                            <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
+                        @endif
+                        
+                        @if ($email_status == 'invalid')
+                            <p>Token Verifikasi Salah!</p>
+                            <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
+                        @endif
                     @endif
 
-                    @if ($email_status == 'verified')
-                        <p>Email Telah Diverifikasi!</p>
-                        <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
-                    @endif
-                    
-                    @if ($email_status == 'invalid')
-                        <p>Token Verifikasi Salah!</p>
-                        <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@if ($email_status == 'success')
+@if (isset($email_status) && $email_status == 'success')
 <script>
     let data = {
         token: "{{ $token }}",
