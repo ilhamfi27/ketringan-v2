@@ -26,12 +26,17 @@ class UserController extends Controller
 
         if(Auth::attempt($user_data)){
             $user = Auth::user();
-            $namaKonsumen = $user->customer()->first()->Nama_Konsumen;
+            $konsumen = $user->customer()->first();
             $response['token'] = $user->createToken('userLogin')->accessToken;
-            $response['Nama_Konsumen'] = $namaKonsumen;
+            $response['Nama_Konsumen'] = $konsumen->Nama_Konsumen;
             $response['Email_Konsumen'] = $user->email;
             $response['is_verified'] = $user->email_verified_at != null ? true : false;
             $response['socialized_account'] = false;
+
+            if ($user->email_verified_at != null && $konsumen->is_verifed == 0) {
+                $this->updateVerificationStatus($konsumen);
+            }
+
             return response()->json(
                 $response
             , 200);
@@ -40,6 +45,12 @@ class UserController extends Controller
                 'error' => 'Unauthorized'
             ], 401);
         }
+    }
+
+    private function updateVerificationStatus($konsumen)
+    {
+        $konsumen->is_verifed = 1;
+        $konsumen->save();
     }
     
     public function register(Request $request)
