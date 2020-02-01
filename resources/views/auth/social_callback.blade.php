@@ -23,7 +23,7 @@
     let data = {
         token: "{{ $token }}",
         Nama_Konsumen: "{{ $Nama_Konsumen }}",
-        email: "{{ $email }}",
+        Email_Konsumen: "{{ $email }}",
         is_verified: {{ $is_verified }} == 1 ? true : false,
         socialized_account: {{ $socialized_account }} == 1 ? true : false,
     };
