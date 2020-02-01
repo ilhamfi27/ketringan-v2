@@ -44,7 +44,7 @@ class MenuController extends Controller
         
         return response()->json([
             'kategori' => $kategori,
-            'data' => Menu::addValueToPrice($menu, 3000),
+            'data' => Menu::addValueToPrices($menu),
         ], 200);
     }
 

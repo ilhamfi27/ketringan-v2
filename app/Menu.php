@@ -84,12 +84,12 @@ class Menu extends Model
     {
         $totalPrice = 0;
         foreach ($menuIds as $idx => $id) {
-            $totalPrice += (self::addPrice(self::find($id)->Harga_Paket)) * $qty[$idx];
+            $totalPrice += (self::addValueToPrice(self::find($id)->Harga_Paket)) * $qty[$idx];
         }
         return $totalPrice;
     }
 
-    public static function addValueToPrice($menus)
+    public static function addValueToPrices($menus)
     {
         foreach ($menus as $i => $menu) {
             $addPrice = 2500 + ($menu->Harga_Paket * 0.25);
@@ -98,7 +98,7 @@ class Menu extends Model
         return $menus;
     }
 
-    public static function addPrice($price)
+    public static function addValueToPrice($price)
     {
         $addPrice = 2500 + ($price * 0.25);
         return $price += $addPrice;

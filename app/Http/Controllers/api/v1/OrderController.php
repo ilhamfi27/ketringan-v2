@@ -93,7 +93,7 @@ class OrderController extends Controller
                     'Catatan' => $checkout['Catatan'],
                     'Jumlah_Kotak' => $checkout['Jumlah_Pemesanan'][$idx],
                     'Id_Pesanan' => $order->Id_Pesanan,
-                    'Harga' => Menu::addPrice($menuPrice),
+                    'Harga' => Menu::addValueToPrice($menuPrice),
                 ];
             }
             $orderedMenu = OrderedMenu::insert($orderedData);
@@ -149,7 +149,7 @@ class OrderController extends Controller
             $baseUrl = env('APP_ENV') == 'staging' 
                         ? env('APP_FRONT_END_URL') : env('APP_URL').env('FRONT_END_PORT');
             $paymentDetail = (object) [
-                'data_menu' => Menu::addValueToPrice(
+                'data_menu' => Menu::addValueToPrices(
                                 Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket'])->get()
                             ),
                 'syarat' => '#',
