@@ -162,6 +162,8 @@ class UserController extends Controller
                 $konsumen->save();
                 DB::commit();
 
+                $token = $user->createToken('userLogin')->accessToken;
+
                 return view('auth.email_verification_feedback')
                         ->with([
                             'token' => $token,
