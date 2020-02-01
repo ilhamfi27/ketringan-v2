@@ -17,7 +17,7 @@
                             Silahkan untuk
                             <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}/login">Login</a>
                         @else
-                            <p>Email Sudah Didaftarkan!</p>
+                            <p>Email Telah Dikonfirmasi!</p>
                             Silahkan untuk
                             <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}/login">Login</a>
                         @endif
