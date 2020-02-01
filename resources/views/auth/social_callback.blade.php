@@ -5,22 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Verifikasi Email</div>
+                <div class="card-header">Login</div>
 
                 <div class="card-body">
                     @if (isset($error_response))
                         <p>Mohon maaf, sedang terjadi kesalahan pada sistem.</p>
                         <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}">Kembali ke Halaman Awal</a>
-                    @else
-                        @if ($user_exists)
-                            <p>Email Sudah Terdaftar!</p>
-                            Silahkan untuk
-                            <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}/login">Login</a>
-                        @else
-                            <p>Email Telah Dikonfirmasi!</p>
-                            Silahkan untuk
-                            <a href="{{ env('APP_LANDING_PAGE').env('FRONT_END_PORT') }}/login">Login</a>
-                        @endif
                     @endif
                 </div>
             </div>

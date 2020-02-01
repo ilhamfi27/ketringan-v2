@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Socialite;
 use Auth;
 use Carbon\Carbon;
@@ -12,6 +11,7 @@ use App\User;
 use App\Customer;
 use App\SocializedAccount;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SocialAuthGoogleController extends Controller
 {
@@ -33,10 +33,20 @@ class SocialAuthGoogleController extends Controller
 
             $googleId = $googleUser->id;
             
-            $existingUser = User::where('email', $googleUser->email)->count();
-            if($existingUser > 1){
+            $existingUser = User::where('email', $googleUser->email)->first();
+            if($existingUser != null && $existingUser->count() > 0){
+                $user = User::find($existingUser->id);
+                Auth::login($user);
+                
+                $konsumen = $user->customer()->first();
+                $token = $user->createToken('userLogin')->accessToken;
+    
                 return view('auth.social_callback')->with([
-                    'user_exists' => true,
+                    'token' => $token,
+                    'Nama_Konsumen' => $konsumen->Nama_Konsumen,
+                    'email' => $user->email,
+                    'is_verified' => true,
+                    'socialized_account' => true,
                 ]);
             }
 
@@ -44,7 +54,7 @@ class SocialAuthGoogleController extends Controller
                 DB::beginTransaction();
                 try {
                     $user = new User;
-                    $random_password = str_random(40);
+                    $random_password = Hash::make(str_random(40));
                     $user->email = $googleUser->email;
                     $user->password = $random_password;
                     $user->email_verified_at = Carbon::now()->timestamp;
@@ -52,6 +62,7 @@ class SocialAuthGoogleController extends Controller
         
                     $data_user = new Customer;
                     $data_user->Nama_Konsumen = $googleUser->name;
+                    $data_user->Email_Konsumen = $googleUser->email;
                     $data_user->Foto_Profil_Konsumen = $googleUser->avatar;
                     $data_user->Password = $random_password;
                     $data_user->user_id = $user->id;
@@ -77,7 +88,6 @@ class SocialAuthGoogleController extends Controller
                     'email' => $user->email,
                     'is_verified' => true,
                     'socialized_account' => true,
-                    'user_exists' => false,
                 ]);
             } else {
                 $user = Auth::user();
@@ -90,7 +100,6 @@ class SocialAuthGoogleController extends Controller
                     'email' => $user->email,
                     'is_verified' => true,
                     'socialized_account' => true,
-                    'user_exists' => false,
                 ]);
             }
         } catch (Exception $e) {
