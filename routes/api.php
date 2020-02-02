@@ -49,6 +49,12 @@ Route::prefix('v1')->group(function (){
     Route::group(['prefix' => 'discount'], function () {
         Route::get('all_voucher/', 'api\v1\DiscountController@allVoucher');
     });
+
+    // routes for bank
+    Route::group(['prefix' => 'bank'], function () {
+        Route::get('/', 'api\v1\BankController@all');
+        Route::get('/{id}', 'api\v1\BankController@show');
+    });
     
     Route::get('token_confirmation/{id}', 'api\v1\UserController@token_confirmation');
     
