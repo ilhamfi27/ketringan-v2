@@ -65,6 +65,7 @@ class SocialAuthFacebookController extends Controller
                     $data_user->Email_Konsumen = $facebookUser->email;
                     $data_user->Foto_Profil_Konsumen = $facebookUser->avatar;
                     $data_user->Password = $random_password;
+                    $data_user->is_verifed = 1;
                     $data_user->user_id = $user->id;
                     $data_user->save();
         
