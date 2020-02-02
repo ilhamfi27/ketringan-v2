@@ -27,8 +27,23 @@ class OrderController extends Controller
         $uniqueCode = rand(1,300);
         $checkout = $request->all();
         $checkout['Total_Harga'] = Menu::sumPrices($checkout['Id_Menu_Paket'], 
-                        $checkout['Jumlah_Pemesanan']) + $uniqueCode;
-        
+                        $checkout['Jumlah_Pemesanan']);
+
+        $discount = Discount::where('Kode_Diskon', $checkout['Kode_Diskon'])->first();
+
+        // cek diskon
+        if ($discount != null) {
+            if ($discount->Jenis_Diskon == 'reguler') {
+                $checkout['Potongan_Diskon'] = $discount->Besar_Diskon;
+                $checkout['Total_Harga'] -= $checkout['Potongan_Diskon'];
+            } else if ($discount->Jenis_Diskon == 'persen') {
+                $checkout['Potongan_Diskon'] = $checkout['Total_Harga'] 
+                                                    * $discount->Besar_Diskon * 0.01;
+                $checkout['Total_Harga'] -= $checkout['Potongan_Diskon'];
+            }
+        }
+        $checkout['Total_Harga'] += $uniqueCode;
+
         $theDayAfterTomorrow = Carbon::today()->addDays(2)->toDateString();
         $validator = Validator::make($request->all(), [
             'nama' => 'required|regex:/^[a-zA-Z ]*$/',
@@ -40,6 +55,7 @@ class OrderController extends Controller
             'Jumlah_Pemesanan' => 'required',
             'Metode_Pembayaran' => 'required',
             'Id_Bank' => 'required',
+            'Id_Region' => 'required',
         ]);
 
         if($validator->fails()){
@@ -107,7 +123,6 @@ class OrderController extends Controller
              * @param Potongan_Diskon
              */
 
-            $discount = Discount::where('Kode_Diskon', $checkout['Kode_Diskon'])->first();
             $paymentCompleteData = [
                 'Tagihan' => $checkout['Total_Harga'],
                 'Total_Tagihan' => $checkout['Total_Harga'],
