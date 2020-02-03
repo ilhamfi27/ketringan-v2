@@ -26,10 +26,14 @@ class OrderController extends Controller
     {
         $uniqueCode = rand(1,300);
         $checkout = $request->all();
-        $checkout['Total_Harga'] = Menu::sumPrices($checkout['Id_Menu_Paket'], 
+        $checkout['Total_Harga'] = Menu::sumPrices($checkout['Id_Menu_Paket'],
                         $checkout['Jumlah_Pemesanan']);
 
-        $discount = Discount::where('Kode_Diskon', $checkout['Kode_Diskon'])->first();
+        if($checkout['Kode_Diskon']!="" && $checkout['Kode_Diskon']!=null){
+          $discount = Discount::where('Kode_Diskon', $checkout['Kode_Diskon'])->first();
+        }else{
+          $discount = null;
+        }
 
         // cek diskon
         if ($discount != null) {
@@ -37,9 +41,10 @@ class OrderController extends Controller
                 $checkout['Potongan_Diskon'] = $discount->Besar_Diskon;
                 $checkout['Total_Harga'] -= $checkout['Potongan_Diskon'];
             } else if ($discount->Jenis_Diskon == 'persen') {
-                $checkout['Potongan_Diskon'] = $checkout['Total_Harga'] 
+                $checkout['Potongan_Diskon'] = $checkout['Total_Harga']
                                                     * $discount->Besar_Diskon * 0.01;
-                $checkout['Total_Harga'] -= $checkout['Potongan_Diskon'];
+                $checkout['Total_Harga'] -= ($checkout['Potongan_Diskon'] > $discount->Maksimal_Diskon ?
+                                                            $discount->Maksimal_Diskon : $checkout['Potongan_Diskon']);
             }
         }
         $checkout['Total_Harga'] += $uniqueCode;
@@ -68,7 +73,7 @@ class OrderController extends Controller
         try {
             /**
              * Order insertion section
-             * 
+             *
              * @param Alamat_Pengiriman
              * @param No_Telfon_Aktif
              * @param No_Telfon_Alternatif
@@ -78,10 +83,10 @@ class OrderController extends Controller
              */
             $lastOrder = Order::latest()->first();
             $idKonsumen = $this->getKonsumenId();
-            
+
             $kodePesanan = 'PSNE'.date('ymd')
                         .($lastOrder == null ? 1 : $lastOrder->Id_Pesanan + 1);
-            
+
             $orderCompleteData = [
                 'Tanggal_Pesan' => Carbon::now(),
                 'Id_Konsumen' => $idKonsumen,
@@ -92,11 +97,11 @@ class OrderController extends Controller
 
             // buat nyimpen Id_Pesanan di array dari post request
             $checkout['Id_Pesanan'] = $order->Id_Pesanan;
-            
+
             /**
              * End of order insertion section
              * Start of ordered menu
-             * 
+             *
              * @param Id_Menu_Paket
              * @param Catatan
              * @param Jumlah_Pemesanan
@@ -113,11 +118,11 @@ class OrderController extends Controller
                 ];
             }
             $orderedMenu = OrderedMenu::insert($orderedData);
-            
+
             /**
              * End of ordered menu insertion section
              * Start of payment
-             * 
+             *
              * @param Metode_Pembayaran
              * @param Kode_Diskon
              * @param Potongan_Diskon
@@ -137,7 +142,7 @@ class OrderController extends Controller
             /**
              * End of payment insertion section
              * Start of transfer
-             * 
+             *
              * @param Id_Bank
              */
             $transferCompleteData = [
@@ -148,7 +153,7 @@ class OrderController extends Controller
             /**
              * End of transfer insertion section
              * Start of destroy cart data
-             * 
+             *
              * @param id_konsumen
              * @param id_menu
              */
@@ -161,7 +166,7 @@ class OrderController extends Controller
             DB::commit();
 
             $user = Auth::user();
-            $baseUrl = env('APP_ENV') == 'staging' 
+            $baseUrl = env('APP_ENV') == 'staging'
                         ? env('APP_FRONT_END_URL') : env('APP_URL').env('FRONT_END_PORT');
             $paymentDetail = (object) [
                 'data_menu' => Menu::addValueToPrices(
@@ -193,7 +198,7 @@ class OrderController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
-            
+
             echo $e;
 
             return response()->json([
