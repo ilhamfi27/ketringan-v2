@@ -8,6 +8,10 @@ use App\Http\Controllers\Traits\ImageUpload;
 use App\Order;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Bank;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ConfirmationPaymentNotification;
 
 class PaymentController extends Controller
 {
@@ -17,6 +21,9 @@ class PaymentController extends Controller
     {
         DB::beginTransaction();
         try {
+            $user = Auth::user();
+            $customer = $user->customer()->first();
+
             $idPesanan = $request->id_pesanan;
             $order = Order::find($idPesanan);
             $transfer = $order->transfer()->first();
@@ -36,14 +43,22 @@ class PaymentController extends Controller
 
             DB::commit();
             
+            $paymentDetail = (object) [
+                'data_bank' => Bank::find($transfer->Id_Bank),
+                'nama' => $customer->Nama_Konsumen,
+                'kode_pesanan' => $order->Kode_Pesanan,
+                'total_biaya' => $order->Total_Harga,
+            ];
+            Mail::to('finance@ketringan.com')
+                ->cc(['rafatabahar@gmail.com', 'fitriachusniah@gmail.com'])
+                ->send(new ConfirmationPaymentNotification($paymentDetail));
+            
             return response()->json([
                 'message' => 'Upload Successful!',
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json([
-                'message' => env('APP_ENV') != 'production' ? $e : 'Internal Server Error',
-            ], 500);
+            echo $e;
         }
     }
 }
