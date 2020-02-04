@@ -64,12 +64,23 @@ class Menu extends Model
             $menu->where('tb_region.Id_Region', '=', $region);
         }
 
+        /**
+         * tb_menu_paket.Harga_Paket + 2500 + 
+         * (tb_menu_paket.Harga_Paket * 0.25) <=/>= ?
+         * 
+         * query diatas untuk menyamakan filter harga yang diinputkan
+         * dengan harga yang ada di database.
+         * 
+         * berlaku untuk filter max price dan min price
+         */
         if ($max_price != null) {
-            $menu->where('tb_menu_paket.Harga_Paket', '<=', $max_price);
+            $menu->whereRaw('tb_menu_paket.Harga_Paket + 2500 + 
+                                (tb_menu_paket.Harga_Paket * 0.25) <= ?', [$max_price]);
         }
 
         if ($min_price != null) {
-            $menu->where('tb_menu_paket.Harga_Paket', '>=', $min_price);
+            $menu->whereRaw('tb_menu_paket.Harga_Paket + 2500 + 
+                                (tb_menu_paket.Harga_Paket * 0.25) >= ?', [$min_price]);
         }
 
         if ($priceSort != null) {

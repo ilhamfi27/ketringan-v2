@@ -42,9 +42,9 @@ class OrderController extends Controller
                 $checkout['Total_Harga'] -= $checkout['Potongan_Diskon'];
             } else if ($discount->Jenis_Diskon == 'persen') {
                 $checkout['Potongan_Diskon'] = $checkout['Total_Harga']
-                                                    * $discount->Besar_Diskon * 0.01;
+                                                * $discount->Besar_Diskon * 0.01;
                 $checkout['Total_Harga'] -= ($checkout['Potongan_Diskon'] > $discount->Maksimal_Diskon ?
-                                                            $discount->Maksimal_Diskon : $checkout['Potongan_Diskon']);
+                                                $discount->Maksimal_Diskon : $checkout['Potongan_Diskon']);
             }
         }
         $checkout['Total_Harga'] += $uniqueCode;
