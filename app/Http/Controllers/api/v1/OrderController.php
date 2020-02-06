@@ -147,7 +147,7 @@ class OrderController extends Controller
              */
             $transferCompleteData = [
                 'Keterangan' => 'cash',
-                'Tgl_Batas_Transfer' => Carbon::now()->subDays(1),
+                'Tgl_Batas_Transfer' => Carbon::now()->addDays(1),
             ];
             $transfer = Transfer::create($checkout + $transferCompleteData);
             /**
@@ -167,7 +167,7 @@ class OrderController extends Controller
 
             $user = Auth::user();
             $baseUrl = env('APP_ENV') == 'staging'
-                        ? env('APP_FRONT_END_URL') : env('APP_URL').env('FRONT_END_PORT');
+                        ? env('APP_FRONT_END_URL') : env('APP_LANDING_PAGE').env('FRONT_END_PORT');
             $paymentDetail = (object) [
                 'data_menu' => Menu::addValueToPrices(
                                 Menu::whereIn('Id_Menu_Paket', $checkout['Id_Menu_Paket'])->get()
@@ -181,7 +181,7 @@ class OrderController extends Controller
                 'jumlah_kotak' => $checkout['Jumlah_Pemesanan'],
                 'kode_unik' => $uniqueCode,
                 'alamat' => $checkout['Alamat_Pengiriman'],
-                'tanggal' => $checkout['Tanggal_Kegiatan'],
+                'tanggal' => date_format(date_create($checkout['Tanggal_Kegiatan']), "d-m-Y"),
                 'waktu' => $checkout['Waktu_Kegiatan'],
                 'total_biaya' => $checkout['Total_Harga'],
                 'potongan' => $checkout['Potongan_Diskon'],
