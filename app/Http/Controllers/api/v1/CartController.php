@@ -28,7 +28,8 @@ class CartController extends Controller
                 'Nama_Paket' => $menu->Nama_Paket,
                 'Gambar_Paket' => $menu->Gambar_Paket,
                 'Harga_Paket' => Menu::addValueToPrice($menu->Harga_Paket),
-                'Minimal_Pemesanan' => $vendor->Minimal_Pemesanan,
+                'Minimal_Pemesanan' => $menu->Minimal_Pemesanan != null ? 
+                                        $menu->Minimal_Pemesanan : $vendor->Minimal_Pemesanan,
                 'Nama_Vendor' => $vendor->Nama_Vendor,
             ];
             $cartItems[$key]['menu'] = $detailMenu;
