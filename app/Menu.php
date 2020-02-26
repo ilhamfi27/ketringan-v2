@@ -127,7 +127,7 @@ class Menu extends Model
             } else if ($menu->vendor_minimal_pemesanan != null){
                 $menu->Minimal_Pemesanan = $menu->vendor_minimal_pemesanan;
             } else {
-                $menu->Minimal_Pemesanan = 1;
+                $menu->Minimal_Pemesanan = 10;
             }
             unset($menu->menu_paket_minimal_pemesanan);
             unset($menu->vendor_minimal_pemesanan);
