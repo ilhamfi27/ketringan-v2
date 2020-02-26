@@ -20,7 +20,7 @@ class DiscountController extends Controller
         $currentPrice = $request->nominal;
 
         $discount = Discount::getByKodeDiskon($kodeDiskon)->first();
-        
+
         if ($discount != null) {
             $discountEnabled = $discount->enabled()->first();
         }
@@ -54,12 +54,11 @@ class DiscountController extends Controller
 
                 case 'persen':
                     $diskon = $currentPrice * ($discount->Besar_Diskon * 0.01);
-                    $hargaDiskon = $currentPrice - ($diskon > $discount->Maksimal_Diskon ?
-                                            $discount->Maksimal_Diskon : $diskon);
                     $besarDiskon = $diskon > $discount->Maksimal_Diskon ?
                                     $discount->Maksimal_Diskon : $diskon;
+                    $hargaDiskon = $currentPrice - $besarDiskon;
                     break;
-                
+
                 default:
                     # code...
                     break;
@@ -70,7 +69,7 @@ class DiscountController extends Controller
             $data['harga_diskon'] = 0;
             $data['besar_potongan'] = 0;
         }
-        
+
         $data['diskon'] = [
             'Id_Diskon' => $discount->Id_Diskon,
             'Kode_Diskon' => $discount->Kode_Diskon,
