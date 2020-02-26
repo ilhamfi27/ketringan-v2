@@ -39,6 +39,8 @@ class MenuController extends Controller
         $menu = Menu::getMenu($idJenisMenu, $idKategori, $idRegion, $maxPrice, 
                             $minPrice, $paginationNum, $priceSort);
 
+        $menu = Menu::setMinimalPemesanan($menu);
+
         $kategori = MenuCategory::where('Id_Jenis_Menu', $request->id_jenis_menu)
                         ->get();
         

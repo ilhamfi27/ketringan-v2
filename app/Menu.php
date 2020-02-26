@@ -48,8 +48,13 @@ class Menu extends Model
             ->join('tb_kategori_paket', 'tb_kategori_paket.Id_Kategori_Menu', '=', 'tb_mv_kategorimenu.Id_Kategori_Menu')
             ->join('tb_jenis_paket', 'tb_jenis_paket.Id_Jenis_Menu', '=', 'tb_kategori_paket.Id_Jenis_Menu')
             ->leftJoin('tb_diskon', 'tb_diskon.Id_Diskon', '=', 'tb_menu_paket.Id_Diskon')
-            ->select('tb_menu_paket.*', 'tb_region.Region', 'tb_subregion.Subregion', 
-                        'tb_vendor.*', 'tb_diskon.*')
+            ->select('tb_menu_paket.*',
+                        'tb_region.Region',
+                        'tb_subregion.Subregion', 
+                        'tb_vendor.*',
+                        'tb_diskon.*',
+                        'tb_menu_paket.Minimal_Pemesanan as menu_paket_minimal_pemesanan',
+                        'tb_vendor.Minimal_Pemesanan as vendor_minimal_pemesanan')
             ->groupBy('tb_menu_paket.Id_Menu_Paket');
 
         if ($idJenisMenu != null) {
@@ -113,5 +118,20 @@ class Menu extends Model
     {
         $addPrice = 2500 + ($price * 0.25);
         return $price += $addPrice;
+    }
+
+    public static function setMinimalPemesanan($menus){
+        foreach ($menus as $i => $menu) {
+            if($menu->menu_paket_minimal_pemesanan != null){
+                $menu->Minimal_Pemesanan = $menu->menu_paket_minimal_pemesanan;
+            } else if ($menu->vendor_minimal_pemesanan != null){
+                $menu->Minimal_Pemesanan = $menu->vendor_minimal_pemesanan;
+            } else {
+                $menu->Minimal_Pemesanan = 1;
+            }
+            unset($menu->menu_paket_minimal_pemesanan);
+            unset($menu->vendor_minimal_pemesanan);
+        }
+        return $menus;
     }
 }
