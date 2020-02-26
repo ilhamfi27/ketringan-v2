@@ -49,12 +49,15 @@ class DiscountController extends Controller
             switch ($discount->Jenis_Diskon) {
                 case 'reguler':
                     $hargaDiskon = $currentPrice - $discount->Besar_Diskon;
+                    $besarDiskon = $discount->Besar_Diskon;
                     break;
 
                 case 'persen':
                     $diskon = $currentPrice * ($discount->Besar_Diskon * 0.01);
                     $hargaDiskon = $currentPrice - ($diskon > $discount->Maksimal_Diskon ?
                                             $discount->Maksimal_Diskon : $diskon);
+                    $besarDiskon = $diskon > $discount->Maksimal_Diskon ?
+                                    $discount->Maksimal_Diskon : $diskon;
                     break;
                 
                 default:
@@ -62,6 +65,10 @@ class DiscountController extends Controller
                     break;
             }
             $data['harga_diskon'] = $hargaDiskon;
+            $data['besar_potongan'] = $besarDiskon;
+        } else {
+            $data['harga_diskon'] = 0;
+            $data['besar_potongan'] = 0;
         }
         
         $data['diskon'] = [
